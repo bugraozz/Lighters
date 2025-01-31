@@ -1,6 +1,3 @@
-
-
-
 'use client'
 
 import React, { useState, useEffect } from 'react'
@@ -30,6 +27,9 @@ export default function UserProfile() {
   const [isEditing, setIsEditing] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmNewPassword, setConfirmNewPassword] = useState('');
   const router = useRouter()
   const { user: authUser, updateProfile } = useAuth()
 
@@ -80,26 +80,36 @@ export default function UserProfile() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (!user) return;
-  
-    console.log('Payload being sent:', user);
-  
+
+    if (newPassword && newPassword !== confirmNewPassword) {
+      setError('New passwords do not match');
+      return;
+    }
+
+    const payload = {
+      ...user,
+      currentPassword: currentPassword || undefined,
+      newPassword: newPassword || undefined
+    };
+
+    console.log('Payload being sent:', payload);
+
     try {
       const response = await fetch('/api/usersinfo', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(user),
+        body: JSON.stringify(payload),
       });
-  
+
       console.log('Response:', response);
       const data = await response.json();
       console.log('Response Data:', data);
-  
+
       if (!response.ok) throw new Error(data.message || 'Failed to update profile');
     } catch (error) {
       console.error('Error:', error);
     }
   };
-  
 
   if (isLoading) {
     return <div>Loading...</div>
@@ -214,6 +224,39 @@ export default function UserProfile() {
                     <SelectItem value="diger">Diğer</SelectItem>
                   </SelectContent>
                 </Select>
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="currentPassword">Mevcut Şifre</Label>
+                <Input
+                  id="currentPassword"
+                  name="currentPassword"
+                  type="password"
+                  value={currentPassword}
+                  onChange={(e) => setCurrentPassword(e.target.value)}
+                  disabled={!isEditing}
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="newPassword">Yeni Şifre</Label>
+                <Input
+                  id="newPassword"
+                  name="newPassword"
+                  type="password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  disabled={!isEditing}
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="confirmNewPassword">Yeni Şifreyi Onayla</Label>
+                <Input
+                  id="confirmNewPassword"
+                  name="confirmNewPassword"
+                  type="password"
+                  value={confirmNewPassword}
+                  onChange={(e) => setConfirmNewPassword(e.target.value)}
+                  disabled={!isEditing}
+                />
               </div>
             </div>
             {error && <p className="text-red-500 mt-2">{error}</p>}

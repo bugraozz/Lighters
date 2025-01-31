@@ -24,9 +24,11 @@ export function UserMenu() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
+  
         <Button variant="ghost" className="relative h-8 w-8 rounded-full">
           <User className="h-5 w-5" />
         </Button>
+      
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="end" forceMount>
         {user ? (

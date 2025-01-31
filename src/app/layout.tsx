@@ -1,7 +1,7 @@
 'use client';
 import './globals.css'
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Roboto } from 'next/font/google' // Change this line to import a different font
 import { CartProvider } from '@/contexts/CartContext'
 import { ShoppingCard } from '@/components/ShoppingCard'
 import { usePathname } from 'next/navigation'
@@ -10,7 +10,7 @@ import { ThemeProvider } from "@/components/theme-provider"
 import { FavoritesProvider } from '@/contexts/FavoritesContext';
 import { SessionProvider } from 'next-auth/react';
 
-const inter = Inter({ subsets: ['latin'] })
+const roboto = Roboto({ subsets: ['latin'], weight: ['400', '700'] }) // Update this line to use the new font
 
 export default function RootLayout({
   children,
@@ -26,7 +26,7 @@ export default function RootLayout({
     <SessionProvider>
       <AuthProvider>
         <html lang="en">
-          <body className={inter.className}>
+          <body className={roboto.className}> {/* Update this line to use the new font */}
             <ThemeProvider
               attribute="class"
               defaultTheme="system"
