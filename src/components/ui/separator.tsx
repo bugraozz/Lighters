@@ -1,8 +1,10 @@
 "use client"
 
-import * as SeparatorPrimitive from "@radix-ui/react-separator"
+import React from 'react'
 import { cn } from "@/lib/utils"
 
-const Separator = SeparatorPrimitive.Root
+const Separator = ({ className, ...props }) => (
+  <div className={cn("border-t border-gray-300 my-4", className)} {...props} />
+)
 
 export { Separator }
