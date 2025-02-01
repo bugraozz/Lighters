@@ -1,11 +1,9 @@
 import React from "react";
 import Link from 'next/link'
 import { Button } from "@/components/ui/button"
-import { Search, Heart, Flame, User2 } from 'lucide-react'
+import { Search, Heart, Flame } from 'lucide-react'
 import { ModeToggle } from '@/components/ModeToggle'
 import { UserMenu } from '@/components/UserMenu'
-import { ShoppingCard } from '@/components/ShoppingCard'
-
 
 export default function Header() {
     return (

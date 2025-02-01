@@ -1,10 +1,6 @@
 'use client';
 import './globals.css'
-import type { Metadata } from 'next'
 import { Roboto } from 'next/font/google' // Change this line to import a different font
-import { CartProvider } from '@/contexts/CartContext'
-import { ShoppingCard } from '@/components/ShoppingCard'
-import { usePathname } from 'next/navigation'
 import { AuthProvider } from '@/contexts/AuthContext';
 import { ThemeProvider } from "@/components/theme-provider"
 import { FavoritesProvider } from '@/contexts/FavoritesContext';
@@ -18,9 +14,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
 
-    const pathname = usePathname()
-    const isHomePage = pathname === '/'
-    const isAdminPage = pathname ? pathname.startsWith('/admin') : true
+    
 
   return (
     <SessionProvider>
@@ -33,12 +27,12 @@ export default function RootLayout({
               enableSystem
               disableTransitionOnChange
             >
-              <CartProvider>     
+                  
                 <FavoritesProvider>
                   {children}
                  
                 </FavoritesProvider>
-              </CartProvider>
+              
             </ThemeProvider>
           </body>
         </html>

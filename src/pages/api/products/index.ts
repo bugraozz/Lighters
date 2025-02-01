@@ -44,7 +44,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       res.status(500).json({ error: 'Database error', details: error.message });
     }
   } else if (req.method === 'POST') {
-    const { authenticated, error, userId } = verifyAuth(req);
+    const { authenticated, error } = verifyAuth(req);
     if (!authenticated) {
       return res.status(401).json({ error });
     }

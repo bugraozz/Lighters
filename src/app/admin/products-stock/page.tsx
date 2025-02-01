@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Loader2, ArrowUpDown, Search } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import {
@@ -22,7 +22,7 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 
-const formatPrice = (price: any): string => {
+const formatPrice = (price: number | string): string => {
     if (typeof price === 'number') {
         return price.toFixed(2);
     } else if (typeof price === 'string') {
@@ -55,7 +55,7 @@ export default function AdminProductsStockPage() {
     const [searchTerm, setSearchTerm] = useState('');
     const [typeFilter, setTypeFilter] = useState<string>('all');
 
-    const fetchProducts = async () => {
+    const fetchProducts = useCallback(async () => {
         try {
             const token = getToken();
             const response = await fetch('/api/products', {
@@ -83,15 +83,11 @@ export default function AdminProductsStockPage() {
                 variant: "destructive",
             });
         }
-    }
+    }, [getToken]);
 
     useEffect(() => {
         fetchProducts();
-    }, []);
-
-    const getTotalStock = (sizes: Size[]) => {
-        return sizes.reduce((total, size) => total + size.stock, 0);
-    }
+    }, [fetchProducts]);
 
     const sortProducts = (a: Product, b: Product) => {
         if (a[sortColumn] < b[sortColumn]) return sortDirection === 'asc' ? -1 : 1;
@@ -193,8 +189,6 @@ export default function AdminProductsStockPage() {
                                             ? `${formatPrice(product.price)} TL`
                                             : "Fiyat Yok"}
                                     </TableCell>
-                                    
-                                 
                                 </TableRow>
                             ))}
                         </TableBody>

@@ -6,16 +6,11 @@ import { useState, useEffect, useCallback } from 'react';
 import {
   Pagination,
   PaginationContent,
-  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import Link from 'next/link';
-import { Button } from "@/components/ui/button";
-import { Search, Heart } from 'lucide-react';
-import { ShoppingCard } from '../../components/ShoppingCard'; // Sepet bileşeni için doğru yolu belirtin.
 import Header from '@/components/Header';
 
 interface Product {
@@ -37,7 +32,6 @@ interface FilterState {
 export default function CakmakPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
-  const [categories, setCategories] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [productsPerPage] = useState(12); // Adjust this number as needed

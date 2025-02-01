@@ -29,7 +29,7 @@ export default async function handler(req, res) {
       res.status(500).json({ error: 'Database error', details: error.message });
     }
   } else if (req.method === 'PUT') {
-    const { authenticated, error, userId } = verifyAuth(req);
+    const { authenticated, error } = verifyAuth(req);
     if (!authenticated) {
       return res.status(401).json({ error });
     }
@@ -60,7 +60,7 @@ export default async function handler(req, res) {
       res.status(500).json({ error: 'Database error' });
     }
   } else if (req.method === 'DELETE') {
-    const { authenticated, error, userId } = verifyAuth(req);
+    const { authenticated, error } = verifyAuth(req);
     if (!authenticated) {
       return res.status(401).json({ error });
     }

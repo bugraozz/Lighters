@@ -5,8 +5,6 @@ import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { useCart } from '@/contexts/CartContext'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { ChevronLeft } from 'lucide-react'
 
 interface ProductSize {
@@ -41,8 +39,6 @@ export default function ProductPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
-  const [selectedSize, setSelectedSize] = useState<string | null>(null)
-  const { addItem } = useCart()
 
   useEffect(() => {
     if (id) {
@@ -58,27 +54,12 @@ export default function ProductPage() {
       }
       const data = await response.json()
       setProduct(data)
-      if (data.sizes && data.sizes.length > 0) {
-        setSelectedSize(data.sizes[0].size)
-      }
-    } catch (err) {
+    } catch (error) {
       setError('Ürün yüklenirken bir hata oluştu.')
     } finally {
       setIsLoading(false)
     }
   }
-
-  const handleAddToCart = async () => {
-    if(product && selectedSize) {
-      addItem({
-        id: product.id,
-        name: product.name,
-        price: product.price,
-        quantity: 1,
-        size: selectedSize
-      });
-    }
-  };
 
   const nextImage = () => {
     if (product) {

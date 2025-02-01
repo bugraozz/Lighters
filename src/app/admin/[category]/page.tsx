@@ -1,14 +1,13 @@
 "use client"
 
 import React, { useState, useEffect } from "react"
-import { useRouter, useParams } from "next/navigation"
+import { useParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Loader2 } from "lucide-react"
-import { useAuth } from "@/contexts/AuthContext"
 import FileUpload from '@/components/FileUpload';
 
 interface Product {
@@ -19,7 +18,6 @@ interface Product {
   category: string
   description: string
   link:string
-  
 }
 
 interface Category {
@@ -54,7 +52,6 @@ async function fetchCategories(type: string): Promise<Category[]> {
 
 export default function AdminCategoryPage() {
   const params = useParams()
-  const router = useRouter()
   const [products, setProducts] = useState<Product[]>([])
   const [categories, setCategories] = useState<Category[]>([])
   const [newProduct, setNewProduct] = useState<Omit<Product, "id">>({
@@ -73,12 +70,8 @@ export default function AdminCategoryPage() {
   const [showProductForm, setShowProductForm] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [clientSelectedCategory, setClientSelectedCategory] = useState<string>("")
-  const { user } = useAuth();
-
 
   useEffect(() => {
- 
-
     setClientSelectedCategory(selectedCategory)
   }, [selectedCategory])
 

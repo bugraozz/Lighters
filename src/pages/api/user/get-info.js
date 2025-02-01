@@ -1,4 +1,3 @@
-import { NextApiRequest, NextApiResponse } from 'next'
 import jwt from 'jsonwebtoken'
 import db from '../../../lib/db'
 

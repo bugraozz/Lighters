@@ -1,10 +1,9 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
-import { useCart } from '@/contexts/CartContext'
 import { useFavorites } from '@/contexts/FavoritesContext'
 import { useAuth } from '@/contexts/AuthContext'
-import { Flame, Heart } from 'lucide-react'
+import { Heart } from 'lucide-react'
 import { toast } from "@/hooks/use-toast"
 
 interface ProductSize {
@@ -41,26 +40,10 @@ const formatPrice = (price: number | string): string => {
 }
 
 export function ProductCard({ product }: { product: Product }) {
-  const { addItem } = useCart()
+  
   const { addToFavorites, removeFromFavorites, isFavorite } = useFavorites()
   const { user } = useAuth()
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
-
-  const handleAddToCart = (e: React.MouseEvent) => {
-    e.preventDefault()
-    if (product.sizes && product.sizes.length > 0) {
-      const firstAvailableSize = product.sizes.find(size => size.stock > 0)
-      if (firstAvailableSize) {
-        addItem({
-          id: product.id,
-          name: product.name,
-          price: parseFloat(formatPrice(product.price)),
-          quantity: 1,
-          size: firstAvailableSize.size
-        })
-      }
-    }
-  }
 
   const handleToggleFavorite = async (e: React.MouseEvent) => {
     e.preventDefault()

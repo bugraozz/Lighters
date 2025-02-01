@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next"
-import db from "../../../../lib/db"
+
 
 import { Pool } from "pg";
 
