@@ -26,10 +26,10 @@ export function verifyAuth(req) {
     if (!process.env.JWT_SECRET) {
       throw new Error('JWT_SECRET is not set in environment variables');
     }
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET) as DecodedToken;
     console.log('Decoded token:', decoded);
 
-    return { authenticated: true, userId: (decoded as any).id };
+    return { authenticated: true, userId: decoded.id };
   } catch (error) {
     console.error('Token verification failed:', error.message);
     return { authenticated: false, error: 'Invalid or expired token' };

@@ -1,9 +1,6 @@
-
-
-
 'use client'
 
-import React, { createContext, useState, useContext, useEffect } from 'react'
+import React, { createContext, useState, useContext, useEffect, useCallback } from 'react'
 import { useAuth } from './AuthContext'
 import { toast } from "@/hooks/use-toast"
 
@@ -41,18 +38,7 @@ export const FavoritesProvider: React.FC<{ children: React.ReactNode }> = ({ chi
 
   console.log('FavoritesProvider: Current user:', user)
 
-  useEffect(() => {
-    if (user) {
-      console.log('User logged in, fetching favorites')
-      fetchFavorites()
-    } else {
-      console.log('User not logged in, clearing favorites')
-      setFavorites([])
-      setIsLoading(false)
-    }
-  }, [user])
-
-  const fetchFavorites = async () => {
+  const fetchFavorites = useCallback(async () => {
     if (!user?.token) return
 
     setIsLoading(true)
@@ -80,9 +66,20 @@ export const FavoritesProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [user?.token])
 
-    const addToFavorites = async (item: FavoriteItem) => {
+  useEffect(() => {
+    if (user) {
+      console.log('User logged in, fetching favorites')
+      fetchFavorites()
+    } else {
+      console.log('User not logged in, clearing favorites')
+      setFavorites([])
+      setIsLoading(false)
+    }
+  }, [user, fetchFavorites])
+
+  const addToFavorites = async (item: FavoriteItem) => {
     console.log('addToFavorites called with item:', item)
     console.log('Current user state in addToFavorites:', user)
     if (!user?.token) {
@@ -179,9 +176,6 @@ export const FavoritesProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     console.log(`Checking if product ${id} is favorite:`, result)
     return result
   }
-
-
-  
 
   return (
     <FavoritesContext.Provider value={{ favorites, addToFavorites, removeFromFavorites, isFavorite, isLoading }}>

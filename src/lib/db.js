@@ -1,4 +1,4 @@
-const { Pool } = require('pg');
+import { Pool } from 'pg';
 
 const pool = new Pool({
   user: 'postgres',
@@ -16,6 +16,8 @@ pool.connect((err, client, release) => {
   release(); // Client'ı serbest bırak
 });
 
-export default {
+const db = {
   query: (text, params) => pool.query(text, params),
 };
+
+export default db;

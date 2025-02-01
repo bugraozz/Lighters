@@ -65,7 +65,7 @@ export default function AdminCategoryPage() {
   const [newCategory, setNewCategory] = useState<Omit<Category, "id">>({ name: "", type: "" })
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState<string | null>(null)
-  const [selectedCategory, setSelectedCategory] = useState<string>(params.category)
+  const [selectedCategory, setSelectedCategory] = useState<string>(params?.category || "")
   const [showCategoryForm, setShowCategoryForm] = useState(false)
   const [showProductForm, setShowProductForm] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
@@ -75,7 +75,7 @@ export default function AdminCategoryPage() {
     setClientSelectedCategory(selectedCategory)
   }, [selectedCategory])
 
-  const type = params.category === "cakmak" ? "cakmak" : "kilif"
+  const type = params?.category === "cakmak" ? "cakmak" : "kilif"
 
   useEffect(() => {
     const fetchData = async () => {

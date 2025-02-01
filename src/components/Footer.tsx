@@ -26,9 +26,9 @@ export function Footer() {
           <div>
             <h3 className="text-lg font-semibold mb-4">Sosyal Medya</h3>
             <ul className="space-y-2">
-              <li><a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="hover:underline">Facebook</a></li>
-              <li><a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="hover:underline">Twitter</a></li>
-              <li><a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="hover:underline">Instagram</a></li>
+            <li><a href="https://www.trendyol.com/magaza/hediyelistem-m-457595?sst=0" target="_blank" rel="noopener noreferrer" className="hover:underline">Trendyol</a></li>
+              <li><a href="https://www.hepsiburada.com/magaza/hediyelistem" target="_blank" rel="noopener noreferrer" className="hover:underline">hepsiburada</a></li>
+              <li><a href="https://www.instagram.com/ka_leather_craft?igsh=MTlnZXQ1eXJ0cDhueQ==" target="_blank" rel="noopener noreferrer" className="hover:underline">Instagram</a></li>
             </ul>
           </div>
         </div>

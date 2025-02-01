@@ -37,7 +37,6 @@ export default function ProductPage() {
   const id = params.id as string
   const [product, setProduct] = useState<Product | null>(null)
   const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
 
   useEffect(() => {
@@ -54,7 +53,7 @@ export default function ProductPage() {
       }
       const data = await response.json()
       setProduct(data)
-    } catch (error) {
+    } catch {
       setError('Ürün yüklenirken bir hata oluştu.')
     } finally {
       setIsLoading(false)
