@@ -3,6 +3,7 @@ import { verifyAuth } from '../../../lib/auth';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  console.log(`Received ${req.method} request with query:`, req.query);
   if (req.method === 'GET') {
     const { category, type, sizes } = req.query;
     try {
@@ -37,19 +38,24 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       query += ' GROUP BY p.id';
 
+      console.log('Executing query:', query, 'with params:', params);
       const result = await db.query(query, params);
+      console.log('Query result:', result.rows);
       res.status(200).json(result.rows.length ? result.rows : []);
     } catch (error) {
       console.error('Error fetching products:', error);
       res.status(500).json({ error: 'Database error', details: error.message });
     }
   } else if (req.method === 'POST') {
+    console.log('POST request received');
     const { authenticated, error } = verifyAuth(req);
     if (!authenticated) {
+      console.log('Authentication failed:', error);
       return res.status(401).json({ error });
     }
 
     const { name, price, images, category, type, description, link } = req.body;
+    console.log('Request body:', req.body);
   
     if (!type) {
       return res.status(400).json({ error: 'type bilgisi eksik.' });
@@ -64,6 +70,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       );
       
       const product = productResult.rows[0];
+      console.log('Inserted product:', product);
 
       for (let i = 0; i < images.length; i++) {
         await db.query(
@@ -73,6 +80,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
 
       await db.query('COMMIT');
+      console.log('Transaction committed');
 
       res.status(201).json(product);
     } catch (error) {

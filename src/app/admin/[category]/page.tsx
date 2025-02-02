@@ -9,6 +9,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Loader2 } from "lucide-react"
 import FileUpload from '@/components/FileUpload';
+import { useAuth } from "@/contexts/AuthContext"
 
 interface Product {
   id: number
@@ -70,6 +71,7 @@ export default function AdminCategoryPage() {
   const [showProductForm, setShowProductForm] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [clientSelectedCategory, setClientSelectedCategory] = useState<string>("")
+  const { getToken } = useAuth();
 
   useEffect(() => {
     setClientSelectedCategory(selectedCategory)
@@ -127,6 +129,8 @@ export default function AdminCategoryPage() {
     }
   }
 
+  const token = getToken(); // Replace with actual token
+
   const handleAddProduct = async () => {
     if (!newProduct.name.trim()) {
       setError("Ürün adı boş olamaz.");
@@ -135,7 +139,10 @@ export default function AdminCategoryPage() {
     try {
       const response = await fetch("/api/products", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
         body: JSON.stringify({ ...newProduct, type }),
       });
 
