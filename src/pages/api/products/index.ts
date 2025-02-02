@@ -65,21 +65,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     try {
       await db.query('BEGIN');
 
-      // const productResult = await db.query(
-      //   'INSERT INTO "Products" (name, price, category, type, description, link) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
-      //   [name, price, category, type, description, link]
-      // );
-      
-      // const product = productResult.rows[0];
-      // console.log('Inserted product:', product);
-
-      // for (let i = 0; i < images.length; i++) {
-      //   await db.query(
-      //     'INSERT INTO "ProductImages" (product_id, image_url, order_index) VALUES ($1, $2, $3)',
-      //     [product.id, images[i], i]
-      //   );
-      // }
-
+     
       const productResult = await db.query(
         'INSERT INTO "Products" (name, price, category, type, description, link) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id',
         [name, price, category, type, description, link]

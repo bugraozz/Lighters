@@ -1,7 +1,7 @@
 import React from "react";
 import Link from 'next/link'
 import { Button } from "@/components/ui/button"
-import { Search, Heart, Flame } from 'lucide-react'
+import { Search, Heart,  Gift } from 'lucide-react'
 import { ModeToggle } from '@/components/ModeToggle'
 import { UserMenu } from '@/components/UserMenu'
 
@@ -20,7 +20,7 @@ export default function Header() {
               </div>
               <div className="text-2xl font-italic">
                 <Link href="/">
-                    <p><Flame color="red" size={30}/></p>
+                    <p><Gift color="red" size={30}/></p>
                 </Link>
                 </div>
               <div className="flex items-center space-x-3">
