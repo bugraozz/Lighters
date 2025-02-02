@@ -36,7 +36,7 @@ export default function AdminLoginPage() {
   return (
     <div className="min-h-screen flex">
       {/* Sol taraf: Görsel */}
-      <div className="hidden md:flex w-1/2 bg-cover bg-center" style={{ backgroundImage: "url('/uploads/1738187397129-IMG-20250129-WA0022.jpg')" }}></div>
+      <div className="hidden md:flex w-1/2 bg-cover bg-center" style={{ backgroundImage: "url('/cakmak4.jpg')" }}></div>
       
       {/* Sağ taraf: Giriş/Kayıt Formu */}
       <div className="w-full md:w-1/2 flex items-center justify-center p-6 relative">
@@ -63,7 +63,7 @@ export default function AdminLoginPage() {
                   <Lock className="absolute left-3 text-gray-400" size={20} />
                   <Input className="pl-10" placeholder="Şifre" type="password" value={Password} onChange={(e) => setPassword(e.target.value)} required />
                 </div>
-                <Separator />
+                <Separator className="my-4" />
                 <CardFooter>
                   <Button type="submit" className="w-full">Giriş Yap</Button>
                 </CardFooter>
@@ -91,7 +91,7 @@ export default function AdminLoginPage() {
                   <Lock className="absolute left-3 text-gray-400" size={20} />
                   <Input className="pl-10" placeholder="Şifreyi Onayla" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
                 </div>
-                <Separator />
+                <Separator className="" />
                 <CardFooter>
                   <Button type="submit" className="w-full">Kayıt Ol</Button>
                 </CardFooter>

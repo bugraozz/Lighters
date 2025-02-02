@@ -34,7 +34,7 @@ const getImageSrc = (image: string) => {
 export default function ProductPage() {
   const params = useParams()
   const router = useRouter()
-  const id = params.id as string
+  const id = params?.id as string | undefined
   const [product, setProduct] = useState<Product | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -55,7 +55,7 @@ export default function ProductPage() {
       const data = await response.json()
       setProduct(data)
     } catch (error) {
-      setError(error.message)
+      setError((error as Error).message)
     } finally {
       setIsLoading(false)
     }

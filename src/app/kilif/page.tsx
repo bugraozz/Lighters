@@ -10,7 +10,10 @@ interface Product {
   name: string;
   price: number;
   subCategory: string;
+  category: string;
   size: string;
+  image: string;
+  gender: string;
 }
 
 interface FilterState {
@@ -35,7 +38,11 @@ export default function KilifPage() {
       setProducts(data);
       setFilteredProducts(data); // Başlangıçta tüm ürünleri göster
     } catch (error) {
-      setError(error.message);
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('Ürünler yüklenirken bir hata oluştu.');
+      }
     }
   };
 
@@ -51,7 +58,7 @@ export default function KilifPage() {
 
         const sizeMatch =
           filters.selectedSizes.length === 0 ||
-          product.sizes.some((sizeObj) => filters.selectedSizes.includes(sizeObj.size)); // sizes içindeki eşleşmeyi kontrol et
+          filters.selectedSizes.includes(product.size); // size içindeki eşleşmeyi kontrol et
 
         const priceMatch =
           product.price >= filters.priceRange[0] && product.price <= filters.priceRange[1];

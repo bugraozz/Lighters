@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { useDebounce } from 'use-debounce'
 import { Input } from "@/components/ui/input"
@@ -14,10 +14,19 @@ interface Product {
   category: string
   type: string
   images: string[]
-  sizes: string[]
+  image: string
+  gender: string
 }
 
 export default function SearchPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <SearchContent />
+    </Suspense>
+  )
+}
+
+function SearchContent() {
   const searchParams = useSearchParams()
   const searchQuery = searchParams?.get('q') ?? ''
   const [searchTerm, setSearchTerm] = useState(searchQuery)

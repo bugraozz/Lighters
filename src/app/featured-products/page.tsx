@@ -4,8 +4,17 @@ import { useEffect, useState } from 'react';
 import { ProductCard } from '@/components/ProductCard';
 
 export default function FeaturedProducts() {
-  const [products, setProducts] = useState([]);
-  const [error, setError] = useState(null);
+  interface Product {
+    id: number;
+    name: string;
+    price: number;
+    image: string;
+    category: string;
+    gender: string;
+  }
+
+  const [products, setProducts] = useState<Product[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     async function getProducts() {
@@ -15,7 +24,7 @@ export default function FeaturedProducts() {
         const data = await response.json();
         setProducts(data);
       } catch (error) {
-        setError(error.message);
+        setError((error instanceof Error) ? error.message : 'Bilinmeyen bir hata oluştu.');
       }
     }
 

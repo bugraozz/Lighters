@@ -20,7 +20,9 @@ interface Product {
   images: string[];
   category: string;
   size: string;
-  sizes: { size: string }[];
+  sizes: { size: string; stock: number }[];
+  image: string;
+  gender: string;
 }
 
 interface FilterState {
@@ -49,7 +51,11 @@ export default function CakmakPage() {
       setProducts(data);
       setFilteredProducts(data); // Başlangıçta tüm ürünleri göster
     } catch (error) {
-      setError(error.message);
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('Ürünler yüklenirken bir hata oluştu.');
+      }
     }
   };
 
@@ -64,7 +70,7 @@ export default function CakmakPage() {
           product.sizes.some((sizeObj) => filters.selectedSizes.includes(sizeObj.size)); // sizes içindeki eşleşmeyi kontrol et
 
         const priceMatch =
-          product.price >= filters.priceRange[0] && product.price <= filters.priceRange[1];
+          Number(product.price) >= filters.priceRange[0] && Number(product.price) <= filters.priceRange[1];
 
         return categoryMatch && sizeMatch && priceMatch;
       });

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { Loader2, ArrowUpDown, Search } from 'lucide-react';
+import { Loader2, ArrowUpDown} from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import {
     Table,
@@ -79,7 +79,7 @@ export default function AdminProductsStockPage() {
             setLoading(false);
             toast({
                 title: "Hata",
-                description: error.message || "Ürünler yüklenirken bir hata oluştu.",
+                description: (error as Error).message || "Ürünler yüklenirken bir hata oluştu.",
                 variant: "destructive",
             });
         }
@@ -90,6 +90,7 @@ export default function AdminProductsStockPage() {
     }, [fetchProducts]);
 
     const sortProducts = (a: Product, b: Product) => {
+        if (a[sortColumn] == null || b[sortColumn] == null) return 0;
         if (a[sortColumn] < b[sortColumn]) return sortDirection === 'asc' ? -1 : 1;
         if (a[sortColumn] > b[sortColumn]) return sortDirection === 'asc' ? 1 : -1;
         return 0;
@@ -130,7 +131,6 @@ export default function AdminProductsStockPage() {
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="max-w-sm"
-                    icon={<Search className="h-4 w-4 text-gray-500" />}
                 />
                 <Select value={typeFilter} onValueChange={setTypeFilter}>
                     <SelectTrigger className="w-[180px]">

@@ -3,10 +3,9 @@ import bcrypt from 'bcrypt'
 
 export default async function handler(req, res) {
   if (req.method === 'POST') {
-    const { Username, email, Password } = req.body
+    const { Username, email, Password, phone } = req.body
 
-    // Check if all required fields are present
-    if (!Username || !email || !Password) {
+    if (!Username || !email || !Password || !phone) {
       return res.status(400).json({ message: 'All fields are required' })
     }
 
@@ -21,8 +20,8 @@ export default async function handler(req, res) {
       const hashedPassword = await bcrypt.hash(Password, saltRounds)
 
       const result = await db.query(
-        'INSERT INTO "Users" ("Username", email, "Password", role) VALUES ($1, $2, $3, $4) RETURNING id, "Username", email, role',
-        [Username, email, hashedPassword, 'user'] 
+        'INSERT INTO "Users" ("Username", email, "Password", phone, role) VALUES ($1, $2, $3, $4, $5) RETURNING id, "Username", email, phone, role',
+        [Username, email, hashedPassword, phone, 'user'] 
       )
 
       res.status(201).json(result.rows[0])

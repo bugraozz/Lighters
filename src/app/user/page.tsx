@@ -28,7 +28,7 @@ export default function UserProfile() {
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
-  const { user: authUser } = useAuth()
+  const { user: authUser } = useAuth() as { user: { email: string } | null }
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -43,7 +43,7 @@ export default function UserProfile() {
         const data = await response.json();
   
         console.log('Fetched data:', data); // Debug için
-        const loggedInUser = data.find((u) => u.email === authUser?.email);
+        const loggedInUser = data.find((u: UserInfo) => u.email === authUser?.email || '');
   
         if (loggedInUser) {
           setUser(loggedInUser);
@@ -74,7 +74,7 @@ export default function UserProfile() {
     }
   }
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!user) return;
 

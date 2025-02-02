@@ -23,7 +23,7 @@ export default async function handler(req, res) {
         const isPasswordValid = await bcrypt.compare(Password, user.Password);
 
         if (isPasswordValid) {
-          const { Password, ...userWithoutPassword } = user;
+          const {  ...userWithoutPassword } = user;
           const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1d' });
 
           return res.status(200).json({ message: 'Login successful', user: { ...userWithoutPassword, token } });

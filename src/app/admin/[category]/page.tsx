@@ -66,7 +66,7 @@ export default function AdminCategoryPage() {
   const [newCategory, setNewCategory] = useState<Omit<Category, "id">>({ name: "", type: "" })
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState<string | null>(null)
-  const [selectedCategory, setSelectedCategory] = useState<string>(params?.category || "")
+  const [selectedCategory, setSelectedCategory] = useState<string>(Array.isArray(params?.category) ? params.category[0] : params?.category || "")
   const [showCategoryForm, setShowCategoryForm] = useState(false)
   const [showProductForm, setShowProductForm] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
@@ -124,6 +124,7 @@ export default function AdminCategoryPage() {
       setSuccess("Kategori başarıyla eklendi.")
       setError(null)
     } catch (error) {
+      console.error(error);
       setError("Kategori eklenirken bir hata oluştu.")
       setSuccess(null)
     }
@@ -166,6 +167,7 @@ export default function AdminCategoryPage() {
       const updatedProducts = await fetchProducts(selectedCategory);
       setProducts(Array.isArray(updatedProducts) ? updatedProducts : []);
     } catch (error) {
+      console.error(error);
       setError("Ürün eklenirken bir hata oluştu.");
       setSuccess(null);
     }
@@ -178,7 +180,10 @@ export default function AdminCategoryPage() {
     try {
       const response = await fetch(`/api/products/${id}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}` // Add the token here
+        },
         body: JSON.stringify(updatedProduct),
       })
 
@@ -188,6 +193,7 @@ export default function AdminCategoryPage() {
       setSuccess("Ürün başarıyla güncellendi.")
       setError(null)
     } catch (error) {
+      console.error(error);
       setError("Ürün güncellenirken bir hata oluştu.")
       setSuccess(null)
     }
@@ -203,6 +209,7 @@ export default function AdminCategoryPage() {
       setSuccess("Ürün başarıyla silindi.")
       setError(null)
     } catch (error) {
+      console.error(error);
       setError("Ürün silinirken bir hata oluştu.")
       setSuccess(null)
     }
@@ -377,7 +384,6 @@ export default function AdminCategoryPage() {
               <Select
                 value={newProduct.category}
                 onValueChange={(value) => setNewProduct({ ...newProduct, category: value })}
-                className="mb-4"
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Kategori Seçin" />
@@ -407,7 +413,6 @@ export default function AdminCategoryPage() {
               setClientSelectedCategory(value)
               setSelectedCategory(value)
             }}
-            className="w-full"
           >
             <SelectTrigger>
               <SelectValue placeholder="Kategori Seçin" />

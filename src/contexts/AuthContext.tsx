@@ -77,7 +77,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       router.push(user.role === 'admin' ? '/admin' : '/')
     } catch (err) {
       console.log('Login error:', err)
-      setError(err.message || 'Login failed. Please check your credentials.')
+      const errorMessage = (err instanceof Error) ? err.message : 'Login failed. Please check your credentials.'
+      setError(errorMessage)
     }
   }
 

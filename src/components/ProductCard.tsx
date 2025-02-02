@@ -6,10 +6,7 @@ import { useAuth } from '@/contexts/AuthContext'
 import { Heart } from 'lucide-react'
 import { toast } from "@/hooks/use-toast"
 
-interface ProductSize {
-  size: string
-  stock: number
-}
+
 
 interface Product {
   id: number
@@ -17,10 +14,10 @@ interface Product {
   price: number | string
   image: string
   category: string
-  gender: string
-  sizes?: ProductSize[]
   images?: string[]
 }
+
+
 
 const getImageSrc = (image: string | undefined) => {
   if (!image) return '/placeholder.svg'
@@ -39,8 +36,10 @@ const formatPrice = (price: number | string): string => {
   return '0.00'
 }
 
-export function ProductCard({ product }: { product: Product }) {
-  
+interface ProductCardProps {
+  product: Product
+}
+export function ProductCard({ product }: ProductCardProps) {
   const { addToFavorites, removeFromFavorites, isFavorite } = useFavorites()
   const { user } = useAuth()
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
@@ -66,7 +65,9 @@ export function ProductCard({ product }: { product: Product }) {
           id: product.id,
           name: product.name,
           price: parseFloat(formatPrice(product.price)),
-          image: product.image
+          images: product.images || [],
+          category: product.category,
+          type: 'product' 
         })
       }
     } catch {
@@ -94,9 +95,7 @@ export function ProductCard({ product }: { product: Product }) {
     ? getImageSrc(product.images[currentImageIndex])
     : getImageSrc(product.image)
 
-  const availableSizes = product.sizes
-    ? product.sizes.filter(size => size.stock > 0).map(size => size.size)
-    : []
+  
 
   return (
     <div className="border rounded-lg overflow-hidden shadow-md">
@@ -117,13 +116,19 @@ export function ProductCard({ product }: { product: Product }) {
         </div>
         <div className="p-4">
           <h2 className="text-lg font-bold">{product.name}</h2>
-          {availableSizes.length > 0 && (
-            <p className="text-sm text-gray-500">Bedenler: {availableSizes.join(', ')}</p>
-          )}
+          
           <p className="text-sm text-gray-500">{formatPrice(product.price)} TL</p>
-          <p className="text-xs text-gray-400">{product.category} - {product.gender}</p>
+          <p className="text-xs text-gray-400">{product.category}</p>
         </div>
       </Link>
+      {/* {onRemove && (
+        <button
+          onClick={onRemove}
+          className="w-full bg-red-500 text-white py-2"
+        >
+          Favorilerden Kaldır
+        </button>
+      )} */}
     </div>
   )
 }

@@ -24,7 +24,7 @@ const getImageSrc = (images: string[]) => {
 }
 
 export default function FavoritesPage() {
-  const { favorites, removeFromFavorites, isLoading } = useFavorites()
+  const { favorites, isLoading } = useFavorites()
   const { user } = useAuth()
 
   useEffect(() => {
@@ -63,9 +63,9 @@ export default function FavoritesPage() {
               key={product.id}
               product={{
                 ...product,
-                image: getImageSrc(product.images)
+                image: getImageSrc(product.images),
               }}
-              onRemove={() => removeFromFavorites(product.id)}
+             
             />
           ))}
         </div>

@@ -2,7 +2,14 @@
 import { useEffect, useState } from "react";
 
 export default function VisitorList() {
-  const [visitors, setVisitors] = useState([]);
+  interface Visitor {
+    id: string;
+    ip: string;
+    user_agent: string;
+    visit_time: string;
+  }
+
+  const [visitors, setVisitors] = useState<Visitor[]>([]);
 
   useEffect(() => {
     async function fetchVisitors() {

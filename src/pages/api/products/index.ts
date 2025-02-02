@@ -44,7 +44,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       res.status(200).json(result.rows.length ? result.rows : []);
     } catch (error) {
       console.error('Error fetching products:', error);
-      res.status(500).json({ error: 'Database error', details: error.message });
+      const errorMessage = (error instanceof Error) ? error.message : 'Unknown error';
+      res.status(500).json({ error: 'Database error', details: errorMessage });
     }
   } else if (req.method === 'POST') {
     console.log('POST request received');
@@ -64,20 +65,47 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     try {
       await db.query('BEGIN');
 
+      // const productResult = await db.query(
+      //   'INSERT INTO "Products" (name, price, category, type, description, link) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
+      //   [name, price, category, type, description, link]
+      // );
+      
+      // const product = productResult.rows[0];
+      // console.log('Inserted product:', product);
+
+      // for (let i = 0; i < images.length; i++) {
+      //   await db.query(
+      //     'INSERT INTO "ProductImages" (product_id, image_url, order_index) VALUES ($1, $2, $3)',
+      //     [product.id, images[i], i]
+      //   );
+      // }
+
       const productResult = await db.query(
-        'INSERT INTO "Products" (name, price, category, type, description, link) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
+        'INSERT INTO "Products" (name, price, category, type, description, link) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id',
         [name, price, category, type, description, link]
       );
       
-      const product = productResult.rows[0];
+      console.log('Query result:', productResult.rows);
+      
+      if (!productResult.rows.length) {
+        throw new Error("Product insertion failed, no rows returned.");
+      }
+      
+      const product = productResult.rows[0] as unknown as { id: number };
+      
+      if (!product.id) {
+        throw new Error("Product ID is undefined after insertion.");
+      }
+      
       console.log('Inserted product:', product);
-
+      
       for (let i = 0; i < images.length; i++) {
         await db.query(
           'INSERT INTO "ProductImages" (product_id, image_url, order_index) VALUES ($1, $2, $3)',
           [product.id, images[i], i]
         );
       }
+      
 
       await db.query('COMMIT');
       console.log('Transaction committed');
@@ -86,7 +114,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     } catch (error) {
       await db.query('ROLLBACK');
       console.error('Error adding product:', error);
-      res.status(500).json({ error: 'Database error', details: error.message });
+      const errorMessage = (error instanceof Error) ? error.message : 'Unknown error';
+      res.status(500).json({ error: 'Database error', details: errorMessage });
     }
   } else {
     res.setHeader('Allow', ['GET', 'POST']);

@@ -126,7 +126,7 @@ export default function ProductFilters({ type, onFilterChange }: ProductFiltersP
           max={10000}
           step={10}
           value={priceRange}
-          onValueChange={setPriceRange}
+          onValueChange={(value) => setPriceRange([value[0], value[1]])}
         />
         <div className="flex justify-between mt-2">
           <span>{priceRange[0]} TL</span>

@@ -7,6 +7,11 @@
 import React from 'react'
 import Link from 'next/link'
 import { User } from 'lucide-react'
+
+interface AppUser {
+  name: string;
+  email: string;
+}
 import { useAuth } from '@/contexts/AuthContext'
 import { Button } from "@/components/ui/button"
 import {
@@ -19,7 +24,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 
 export function UserMenu() {
-  const { user, logout } = useAuth()
+  const { user, logout } = useAuth() as { user: AppUser | null, logout: () => void }
 
   return (
     <DropdownMenu>

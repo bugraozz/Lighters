@@ -32,6 +32,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       const uploadedFiles = Array.isArray(files.file) ? files.file : [files.file];
       const filePaths = uploadedFiles.map((file) => {
+        if (!file) {
+          return res.status(500).json({ error: 'Dosya yüklenirken bir hata oluştu.' });
+        }
+
         const timestamp = Date.now();
         const newFileName = `${timestamp}-${file.originalFilename}`;
         const newFilePath = path.join(uploadDir, newFileName);
