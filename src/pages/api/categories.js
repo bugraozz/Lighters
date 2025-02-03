@@ -30,8 +30,24 @@ export default async function handler(req, res) {
       console.error('Error adding category:', error);
       res.status(500).json({ error: 'Database error', details: error.message });
     }
+  } else if (req.method === 'DELETE') {
+    const { id } = req.query;
+    try {
+      const result = await db.query(
+        'DELETE FROM "Categories" WHERE id = $1 RETURNING *',
+        [parseInt(id, 10)]
+      );
+      if (result.rowCount === 0) {
+        res.status(404).json({ error: 'Category not found' });
+      } else {
+        res.status(200).json(result.rows[0]);
+      }
+    } catch (error) {
+      console.error('Error deleting category:', error);
+      res.status(500).json({ error: 'Database error', details: error.message });
+    }
   } else {
-    res.setHeader('Allow', ['GET', 'POST']);
+    res.setHeader('Allow', ['GET', 'POST', 'DELETE']);
     res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 }
