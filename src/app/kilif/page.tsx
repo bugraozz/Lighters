@@ -84,7 +84,7 @@ export default function KilifPage() {
       {/* Header */}
       <Header />
       <div className="container m-4 px-4 py-8">
-        <h1 className="text-2xl font-semibold mb-6">Kılıf Ürünleri</h1>
+        <h1 className="text-2xl font-bold mb-6">Kılıf Ürünleri</h1>
         {error && <div className="text-red-500 mb-4">{error}</div>}
         <div className="flex flex-col md:flex-row gap-8">
           {/* Filtreleme Bölümü */}
@@ -94,7 +94,7 @@ export default function KilifPage() {
 
           <div className="md:w-3/4">
           {currentProducts.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {filteredProducts.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
