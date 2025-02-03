@@ -8,13 +8,38 @@ interface FileUploadProps {
   onUpload: (filePaths: string[]) => void;
 }
 
+const convertToJpg = async (file: File): Promise<File> => {
+  const image = new Image();
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+
+  return new Promise((resolve, reject) => {
+    image.onload = () => {
+      canvas.width = image.width;
+      canvas.height = image.height;
+      ctx?.drawImage(image, 0, 0);
+      canvas.toBlob((blob) => {
+        if (blob) {
+          resolve(new File([blob], file.name.replace(/\.[^/.]+$/, ".jpg"), { type: 'image/jpeg' }));
+        } else {
+          reject(new Error('Conversion to JPG failed.'));
+        }
+      }, 'image/jpeg');
+    };
+    image.onerror = reject;
+    image.src = URL.createObjectURL(file);
+  });
+};
+
 const FileUpload: React.FC<FileUploadProps> = ({ onUpload }) => {
   const [files, setFiles] = useState<File[]>([]);
   const [uploading, setUploading] = useState(false);
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
-      setFiles(Array.from(event.target.files));
+      const selectedFiles = Array.from(event.target.files);
+      const jpgFiles = await Promise.all(selectedFiles.map(file => convertToJpg(file)));
+      setFiles(jpgFiles);
     }
   };
 
