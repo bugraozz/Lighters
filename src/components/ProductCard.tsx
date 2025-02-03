@@ -43,6 +43,7 @@ export function ProductCard({ product }: ProductCardProps) {
   const { addToFavorites, removeFromFavorites, isFavorite } = useFavorites()
   const { user } = useAuth()
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
+  const [touchStartX, setTouchStartX] = useState<number | null>(null)
 
   const handleToggleFavorite = async (e: React.MouseEvent) => {
     e.preventDefault()
@@ -91,6 +92,32 @@ export function ProductCard({ product }: ProductCardProps) {
     }
   }
 
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStartX(e.touches[0].clientX)
+  }
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (touchStartX === null) return
+
+    const touchEndX = e.touches[0].clientX
+    const touchDiff = touchStartX - touchEndX
+
+    if (Math.abs(touchDiff) > 50) {
+      if (touchDiff > 0) {
+        // Swipe left
+        setCurrentImageIndex((prevIndex) =>
+          Math.min(prevIndex + 1, (product.images?.length || 1) - 1)
+        )
+      } else {
+        // Swipe right
+        setCurrentImageIndex((prevIndex) =>
+          Math.max(prevIndex - 1, 0)
+        )
+      }
+      setTouchStartX(null)
+    }
+  }
+
   const imageSrc = product.images && product.images.length > 0
     ? getImageSrc(product.images[currentImageIndex])
     : getImageSrc(product.image)
@@ -100,7 +127,12 @@ export function ProductCard({ product }: ProductCardProps) {
   return (
     <div className="border rounded-lg overflow-hidden shadow-md">
       <Link href={`/products/${product.id}`}>
-        <div className="relative aspect-square" onMouseMove={handleMouseMove}>
+        <div
+          className="relative aspect-square"
+          onMouseMove={handleMouseMove}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+        >
           <Image
             src={imageSrc}
             alt={product.name}
@@ -114,6 +146,19 @@ export function ProductCard({ product }: ProductCardProps) {
             onClick={handleToggleFavorite}
           />
         </div>
+        {product.images && product.images.length > 1 && (
+          <div className="flex justify-center space-x-1 my-2">
+            {product.images.map((_, index) => (
+              <span
+                key={index}
+                className={`block w-2 h-2 rounded-full ${
+                  index === currentImageIndex ? 'bg-gray-800' : 'bg-gray-400'
+                }`}
+                style={{ transition: 'background-color 0.3s', zIndex: 10 }}
+              />
+            ))}
+          </div>
+        )}
         <div className="p-4">
           <h2 className="text-lg font-bold">{product.name}</h2>
           
@@ -121,14 +166,6 @@ export function ProductCard({ product }: ProductCardProps) {
           <p className="text-xs text-gray-400">{product.category}</p>
         </div>
       </Link>
-      {/* {onRemove && (
-        <button
-          onClick={onRemove}
-          className="w-full bg-red-500 text-white py-2"
-        >
-          Favorilerden Kaldır
-        </button>
-      )} */}
     </div>
   )
 }

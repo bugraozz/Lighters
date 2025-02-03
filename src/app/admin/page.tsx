@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useAuth } from "@/contexts/AuthContext";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { FaUser, FaSignOutAlt, FaJediOrder } from "react-icons/fa";
+import { FaUser, FaSignOutAlt, FaJediOrder, FaBars } from "react-icons/fa";
 import { Flame, Smartphone, Users, Archive } from "lucide-react";
 
 export default function AdminPage() {
@@ -13,6 +13,7 @@ export default function AdminPage() {
   const [totalUsers, setTotalUsers] = useState<number | null>(null);
   const [totalProducts, setTotalProducts] = useState<number | null>(null);
   const [visitorCount, setVisitorCount] = useState(0);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
     const fetchTotalUsers = async () => {
@@ -74,7 +75,7 @@ export default function AdminPage() {
   return (
     <div className="flex h-screen bg-gray-100 dark:bg-black dark:text-white">
       {/* Sidebar */}
-      <aside className="w-64 bg-white dark:bg-black shadow-md">
+      <aside className={`w-64 bg-white dark:bg-black shadow-md ${sidebarOpen ? "block" : "hidden"} md:block`}>
         <div className="p-4">
           <h1 className="text-2xl font-bold text-gray-800 dark:text-white">Admin Panel</h1>
         </div>
@@ -106,7 +107,12 @@ export default function AdminPage() {
       {/* Main Content */}
       <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100 dark:bg-black dark:text-white">
         <div className="container mx-auto px-6 py-8 dark:bg-black">
-          <h2 className="text-3xl font-semibold text-gray-800 dark:bg-black dark:text-white mb-6">Genel Bakış</h2>
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-3xl font-semibold text-gray-800 dark:bg-black dark:text-white">Genel Bakış</h2>
+            <Button className="md:hidden" onClick={() => setSidebarOpen(!sidebarOpen)}>
+              <FaBars />
+            </Button>
+          </div>
 
           {/* Statistics Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
