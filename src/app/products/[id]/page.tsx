@@ -24,12 +24,12 @@ interface Product {
   sizes: ProductSize[];
 }
 
-const getImageSrc = (image: string) => {
-  if (image.startsWith('http') || image.startsWith('https')) {
-    return image;
-  }
-  return image.startsWith('/') ? image : `/${image}`;
+const getImageSrc = (image: string | undefined) => {
+  if (!image) return '/placeholder.svg';
+  if (image.startsWith('http')) return image;
+  return image.startsWith('/') ? `/api${image}` : `/api/${image}`;
 };
+
 
 export default function ProductPage() {
   const params = useParams();
@@ -105,25 +105,22 @@ export default function ProductPage() {
                 </Button>
               </div>
               <div className="flex flex-wrap space-x-2 overflow-x-auto pb-2 md:overflow-x-hidden">
-  {product.images.map((image, index) => (
-    <button
-      key={index}
-      onClick={() => setCurrentImageIndex(index)}
-      className={`relative w-20 h-20 flex-shrink-0 ${
-        index === currentImageIndex ? 'ring-2 ring-primary' : ''
-      }`}
-    >
-      <Image
-        src={getImageSrc(image)}
-        alt={`${product.name} - Görsel ${index + 1}`}
-        fill
-        className="object-cover rounded"
-      />
-    </button>
-  ))}
-</div>
-
-
+                {product.images.map((image, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentImageIndex(index)}
+                    className={`relative w-20 h-20 flex-shrink-0 ${index === currentImageIndex ? 'ring-2 ring-primary' : ''
+                      }`}
+                  >
+                    <Image
+                      src={getImageSrc(image)}
+                      alt={`${product.name} - Görsel ${index + 1}`}
+                      fill
+                      className="object-cover rounded"
+                    />
+                  </button>
+                ))}
+              </div>
             </div>
             <div>
               <h1 className="text-3xl font-bold mb-4">{product.name}</h1>
