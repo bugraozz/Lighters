@@ -1,24 +1,14 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { Pool } from "pg";
-
-if (!process.env.DATABASE_URL) {
-  throw new Error("DATABASE_URL environment variable is not set");
-}
-
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false,
-  },
-});
+import db from '../../../../lib/db';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "GET") {
     try {
       const query = "SELECT COUNT(*) AS count FROM visitors";
-      const result = await pool.query(query);
+      const result = await db.query(query);
+      const totalVisitors = Number((result.rows[0] as unknown as { count: number }).count) || 0;
 
-      res.status(200).json({ totalVisitors: result.rows[0].count });
+      res.status(200).json({ totalVisitors });
     } catch (error) {
       console.error("Hata:", error);
       res.status(500).json({ error: "Bir hata oluştu." });
