@@ -24,11 +24,11 @@ interface Product {
   sizes: ProductSize[];
 }
 
-const getImageSrc = (image: string) => {
-  if (image.startsWith('http') || image.startsWith('https')) {
-    return image;
-  }
-  return image.startsWith('/') ? image : `/api/${image}`;
+
+const getImageSrc = (image: string | undefined) => {
+  if (!image) return '/placeholder.svg';
+  if (image.startsWith('http')) return image;
+  return image.startsWith('/') ? `/api${image}` : `/api/${image}`;
 };
 
 export default function ProductPage() {
