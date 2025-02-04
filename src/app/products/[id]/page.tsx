@@ -28,7 +28,7 @@ const getImageSrc = (image: string) => {
   if (image.startsWith('http') || image.startsWith('https')) {
     return image;
   }
-  return image.startsWith('/') ? image : `/${image}`;
+  return image.startsWith('/') ? image : `/api/${image}`;
 };
 
 export default function ProductPage() {
