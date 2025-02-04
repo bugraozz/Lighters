@@ -1,6 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { Pool } from "pg";
 
+if (!process.env.DATABASE_URL) {
+  throw new Error("DATABASE_URL environment variable is not set");
+}
+
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: {
@@ -14,10 +18,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const ip = typeof forwarded === 'string' ? forwarded.split(",")[0] : req.socket.remoteAddress;
 
     try {
-      if (!process.env.DATABASE_URL) {
-        throw new Error("DATABASE_URL environment variable is not set");
-      }
-
       // Veritabanında IP'yi kontrol et ve ekle
       const query = `
         INSERT INTO visitors (ip_address)

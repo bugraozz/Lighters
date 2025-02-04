@@ -6,7 +6,7 @@ import path from 'path';
 export const config = {
   api: {
     bodyParser: false,
-    sizeLimit: '15mb', // Increase the size limit to 15MB
+    sizeLimit: '15mb', // Increase the size limit to 10MB
   },
 };
 
@@ -14,7 +14,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (req.method === 'POST') {
     const uploadDir = path.join(process.cwd(), 'public/uploads');
 
-    // Ensure the upload directory exists
+    
     if (!fs.existsSync(uploadDir)) {
       fs.mkdirSync(uploadDir, { recursive: true });
     }
@@ -23,7 +23,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       multiples: true,
       uploadDir: uploadDir,
       keepExtensions: true,
-      maxFileSize: 15 * 1024 * 1024, // 15MB
+      maxFileSize: 10 * 1024 * 1024, 
     });
 
     form.parse(req, (err, fields, files) => {
