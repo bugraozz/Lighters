@@ -28,7 +28,7 @@ interface Product {
 const getImageSrc = (image: string | undefined) => {
   if (!image) return '/placeholder.svg';
   if (image.startsWith('http')) return image;
-  return image.startsWith('/') ? `/api/uploads/${image}` : `/api/uploads/${image}`;
+  return image.startsWith('/') ? `/api/upload/${image}` : `/api/upload/${image}`;
 };
 
 export default function ProductPage() {
