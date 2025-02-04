@@ -49,7 +49,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           return res.status(500).json({ error: 'Dosya yeniden adlandırılırken bir hata oluştu.' });
         }
 
-        return `/uploads/${newFileName}`;
+        return `public/uploads/${newFileName}`;
       });
 
       res.status(200).json({ filePaths });
