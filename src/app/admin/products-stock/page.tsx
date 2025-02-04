@@ -1,6 +1,3 @@
-
-
-
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
@@ -209,7 +206,7 @@ export default function AdminProductsStockPage() {
                                         <ArrowUpDown className="ml-2 h-4 w-4" />
                                     </Button>
                                 </TableHead>
-                                <TableHead className="text-center">Aksiyon</TableHead>
+                                <TableHead className="w-[150px] text-center">Aksiyon</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
