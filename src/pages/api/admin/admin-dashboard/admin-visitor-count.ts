@@ -1,6 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-
 import { Pool } from "pg";
+
+if (!process.env.DATABASE_URL) {
+  throw new Error("DATABASE_URL environment variable is not set");
+}
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
@@ -12,10 +15,6 @@ const pool = new Pool({
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "GET") {
     try {
-      if (!process.env.DATABASE_URL) {
-        throw new Error("DATABASE_URL environment variable is not set");
-      }
-
       const query = "SELECT COUNT(*) AS count FROM visitors";
       const result = await pool.query(query);
 
