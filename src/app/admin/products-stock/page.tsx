@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { Loader2, ArrowUpDown, Trash } from 'lucide-react';
+import { Loader2, ArrowUpDown} from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import {
     Table,
@@ -105,35 +105,6 @@ export default function AdminProductsStockPage() {
         }
     }
 
-    const deleteProduct = async (productId: number) => {
-        try {
-            const token = getToken();
-            const response = await fetch(`/api/products/${productId}`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-            });
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.error || 'Ürün silinirken bir hata oluştu.');
-            }
-            toast({
-                title: "Başarılı",
-                description: "Ürün başarıyla silindi.",
-                variant: "default",
-            });
-            fetchProducts(); // Refresh the product list
-        } catch (error) {
-            console.error('Error deleting product:', error);
-            toast({
-                title: "Hata",
-                description: (error as Error).message || "Ürün silinirken bir hata oluştu.",
-                variant: "destructive",
-            });
-        }
-    };
 
     const filteredProducts = products
         .filter(product => {
@@ -206,7 +177,6 @@ export default function AdminProductsStockPage() {
                                         <ArrowUpDown className="ml-2 h-4 w-4" />
                                     </Button>
                                 </TableHead>
-                                <TableHead className="w-[150px] text-center">Aksiyon</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -220,11 +190,7 @@ export default function AdminProductsStockPage() {
                                             ? `${formatPrice(product.price)} TL`
                                             : "Fiyat Yok"}
                                     </TableCell>
-                                    <TableCell className="text-center">
-                                        <Button variant="ghost" onClick={() => deleteProduct(product.id)}>
-                                            <Trash className="h-4 w-4" />
-                                        </Button>
-                                    </TableCell>
+                                  
                                 </TableRow>
                             ))}
                         </TableBody>
