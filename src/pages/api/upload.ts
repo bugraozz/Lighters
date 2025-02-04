@@ -6,7 +6,7 @@ import path from 'path';
 export const config = {
   api: {
     bodyParser: false,
-    sizeLimit: '10mb', // Increase the size limit to 10MB
+    sizeLimit: '15mb', // Increase the size limit to 10MB
   },
 };
 
