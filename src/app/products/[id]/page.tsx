@@ -91,7 +91,7 @@ export default function ProductPage() {
             <div>
               <div className="relative aspect-square mb-2">
                 <Image
-                  key={currentImageIndex} // Add key prop here
+                  
                   src={getImageSrc(product.images[currentImageIndex])}
                   alt={product.name}
                   fill
