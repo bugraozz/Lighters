@@ -5,5 +5,12 @@ module.exports = {
     domains: ['via.placeholder.com'],
   },
  
-  // ...existing code...
+  async rewrites() {
+    return [
+      {
+        source: '/api/uploads/:path*',
+        destination: '/uploads/:path*',
+      },
+    ];
+  },
 }
