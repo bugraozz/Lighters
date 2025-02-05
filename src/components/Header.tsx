@@ -20,7 +20,7 @@ export default function Header() {
               </div>
               <div className="text-2xl font-italic">
                 <Link href="/">
-                    <p><Gift color="red" size={30}/></p>
+                    <p> KA Leather Craft </p>
                 </Link>
               </div>
               <div className="flex items-center space-x-3">
