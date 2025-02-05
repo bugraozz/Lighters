@@ -24,7 +24,6 @@ interface Product {
   sizes: ProductSize[];
 }
 
-
 const getImageSrc = (image: string | undefined) => {
   if (!image) return '/placeholder.svg';
   if (image.startsWith('http')) return image;
@@ -79,6 +78,11 @@ export default function ProductPage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
+      {/* Add the back button */}
+      <Button variant="ghost" onClick={() => router.back()} className="absolute top-4 left-4">
+        <ChevronLeft className="mr-2 h-4 w-4" />
+        Geri
+      </Button>
       <div className="md:hidden mb-4">
         <Button variant="ghost" onClick={() => router.back()}>
           <ChevronLeft className="mr-2 h-4 w-4" />
@@ -91,7 +95,6 @@ export default function ProductPage() {
             <div>
               <div className="relative aspect-square mb-2">
                 <Image
-                  
                   src={getImageSrc(product.images[currentImageIndex])}
                   alt={product.name}
                   fill
@@ -106,25 +109,23 @@ export default function ProductPage() {
                 </Button>
               </div>
               <div className="flex flex-wrap space-x-2 overflow-x-auto pb-2 md:overflow-x-hidden">
-  {product.images.map((image, index) => (
-    <button
-      key={index}
-      onClick={() => setCurrentImageIndex(index)}
-      className={`relative w-20 h-20 flex-shrink-0 ${
-        index === currentImageIndex ? 'ring-2 ring-primary' : ''
-      }`}
-    >
-      <Image
-        src={getImageSrc(image)}
-        alt={`${product.name} - Görsel ${index + 1}`}
-        fill
-        className="object-cover rounded"
-      />
-    </button>
-  ))}
-</div>
-
-
+                {product.images.map((image, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentImageIndex(index)}
+                    className={`relative w-20 h-20 flex-shrink-0 ${
+                      index === currentImageIndex ? 'ring-2 ring-primary' : ''
+                    }`}
+                  >
+                    <Image
+                      src={getImageSrc(image)}
+                      alt={`${product.name} - Görsel ${index + 1}`}
+                      fill
+                      className="object-cover rounded"
+                    />
+                  </button>
+                ))}
+              </div>
             </div>
             <div>
               <h1 className="text-3xl font-bold mb-4">{product.name}</h1>
