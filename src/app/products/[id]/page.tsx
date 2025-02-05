@@ -94,11 +94,13 @@ export default function ProductPage() {
           <div className="grid md:grid-cols-2 gap-8">
             <div>
               <div className="relative aspect-square mb-2">
-              <img
+              <Image
   src={getImageSrc(product.images[currentImageIndex])}
   alt={product.name}
-  className="w-full h-auto rounded-lg"
+  fill
+  className="object-cover rounded-lg"
 />
+
 
                 <Button className="absolute left-2 top-1/2 transform -translate-y-1/2" onClick={prevImage}>
                   &#8592;

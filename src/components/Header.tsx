@@ -1,7 +1,7 @@
 import React from "react";
 import Link from 'next/link';
 import { Button } from "@/components/ui/button";
-import { Search, Heart, Gift } from 'lucide-react';
+import { Search, Heart } from 'lucide-react';
 import { ModeToggle } from '@/components/ModeToggle';
 import { UserMenu } from '@/components/UserMenu';
 
