@@ -27,11 +27,8 @@ interface Product {
 const getImageSrc = (image: string | undefined) => {
   if (!image) return '/placeholder.svg';
   if (image.startsWith('http')) return image;
-  const finalPath = `/api/uploads/${image.replace(/^\/+/, '')}`;
-  console.log("Resim yolu:", finalPath);
-  return finalPath;
+  return image.startsWith('/') ? `/api${image}` : `/api/${image}`;
 };
-
 
 export default function ProductPage() {
   const params = useParams();
