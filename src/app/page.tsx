@@ -7,17 +7,17 @@ import { Footer } from '@/components/Footer';
 import FeaturedProducts from './featured-products/page';
 
 const womenImages = [
-  '/cakmak3.jpg',
-  '/cakmak2.jpg',
-  '/cakmak1.jpg',
-  '/cakmak4.jpg',
+  '/uploads/1738544676014-IMG-20250129-WA0023.jpg',
+  '/uploads/1738524411766-IMG-20250129-WA0016.jpg',
+  '/uploads/1738544160769-IMG-20250129-WA0027.jpg',
+  '/uploads/IMG-20250129-WA0005.jpg',
 ];
 
 const menImages = [
-  '/kilif4.jpg',
-  '/kilif2.jpg',
-  '/kilif3.jpg',
-  '/kilif5.jpg',
+  '/uploads/IMG-20250131-WA0004.jpg',
+  '/uploads/IMG-20250131-WA0002.jpg',
+  '/uploads/IMG-20250131-WA0003.jpg',
+  '/uploads/IMG-20250131-WA0005.jpg',
 ];
 
 export default function HomePage() {
