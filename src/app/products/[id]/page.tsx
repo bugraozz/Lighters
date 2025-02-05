@@ -52,7 +52,6 @@ export default function ProductPage() {
         throw new Error('Ürün yüklenirken bir hata oluştu.');
       }
       const data = await response.json();
-      console.log('Fetched product data:', data); // Debug API response
       setProduct(data);
     } catch (error) {
       setError((error as Error).message);
@@ -95,13 +94,14 @@ export default function ProductPage() {
           <div className="grid md:grid-cols-2 gap-8">
             <div>
               <div className="relative aspect-square mb-2">
-                <Image
-                  src={getImageSrc(product.images[currentImageIndex])}
-                  alt={product.name}
-                  fill
-                  className="object-cover rounded-lg"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                />
+              <Image
+  src={getImageSrc(product.images[currentImageIndex])}
+  alt={product.name}
+  fill
+  className="object-cover rounded-lg"
+/>
+
+
                 <Button className="absolute left-2 top-1/2 transform -translate-y-1/2" onClick={prevImage}>
                   &#8592;
                 </Button>
