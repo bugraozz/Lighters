@@ -78,30 +78,23 @@ export default function ProductPage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      {/* Add the back button */}
-      <Button variant="ghost" onClick={() => router.back()} className="absolute top-4 left-4">
+      {/* Ensure the back button is visible on all screen sizes */}
+      <Button variant="ghost" onClick={() => router.back()} className="mb-4">
         <ChevronLeft className="mr-2 h-4 w-4" />
         Geri
       </Button>
-      <div className="md:hidden mb-4">
-        <Button variant="ghost" onClick={() => router.back()}>
-          <ChevronLeft className="mr-2 h-4 w-4" />
-          Geri
-        </Button>
-      </div>
       <Card>
         <CardContent className="p-6">
           <div className="grid md:grid-cols-2 gap-8">
             <div>
               <div className="relative aspect-square mb-2">
-              <Image
-  src={getImageSrc(product.images[currentImageIndex])}
-  alt={product.name}
-  fill
-  className="object-cover rounded-lg"
-/>
-
-
+                <Image
+                  src={getImageSrc(product.images[currentImageIndex])}
+                  alt={product.name}
+                  fill
+                  className="object-cover rounded-lg"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                />
                 <Button className="absolute left-2 top-1/2 transform -translate-y-1/2" onClick={prevImage}>
                   &#8592;
                 </Button>
