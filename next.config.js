@@ -2,7 +2,14 @@
 module.exports = {
   // ...existing code...
   images: {
-    domains: ['via.placeholder.com'],
+    domains: ['hediyelistem.com.tr'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'hediyelistem.com.tr',
+        pathname: '/api/uploads/**',
+      },
+    ],
   },
  
   async rewrites() {

@@ -27,8 +27,9 @@ interface Product {
 const getImageSrc = (image: string | undefined) => {
   if (!image) return '/placeholder.svg';
   if (image.startsWith('http')) return image;
-  return image.startsWith('/') ? `/api/uploads${image}` : `/api/uploads${image}`;
+  return `/api/uploads/${image.replace(/^\/+/, '')}`;
 };
+
 
 export default function ProductPage() {
   const params = useParams();
@@ -94,13 +95,12 @@ export default function ProductPage() {
           <div className="grid md:grid-cols-2 gap-8">
             <div>
               <div className="relative aspect-square mb-2">
-                <Image
-                  src={getImageSrc(product.images[currentImageIndex])}
-                  alt={product.name}
-                  fill
-                  className="object-cover rounded-lg"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                />
+              <img
+  src={getImageSrc(product.images[currentImageIndex])}
+  alt={product.name}
+  className="w-full h-auto rounded-lg"
+/>
+
                 <Button className="absolute left-2 top-1/2 transform -translate-y-1/2" onClick={prevImage}>
                   &#8592;
                 </Button>
