@@ -26,7 +26,7 @@ interface Product {
 
 const getImageSrc = (image: string | undefined) => {
   if (!image) return '/placeholder.svg';
-  if (image.startsWith('https')) return image;
+  if (image.startsWith('http')) return image;
   return image.startsWith('/') ? `/api${image}` : `/api/${image}`;
 };
 
@@ -116,7 +116,7 @@ export default function ProductPage() {
                       alt={`${product.name} - Görsel ${index + 1}`}
                       fill
                       className="object-cover rounded"
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      
                     />
                   </button>
                 ))}
