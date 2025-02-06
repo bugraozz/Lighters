@@ -116,7 +116,6 @@ export default function ProductPage() {
                       alt={`${product.name} - Görsel ${index + 1}`}
                       fill
                       className="object-cover rounded"
-                      
                     />
                   </button>
                 ))}
@@ -144,4 +143,3 @@ export default function ProductPage() {
     </div>
   );
 }
-
