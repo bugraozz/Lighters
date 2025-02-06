@@ -15,7 +15,7 @@ module.exports = {
     return [
       {
         source: '/api/uploads/:path*',
-        destination: 'api/uploads/:path*',
+        destination: '/uploads/:path*',
       },
     ];
   },
