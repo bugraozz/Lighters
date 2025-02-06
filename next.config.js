@@ -1,14 +1,9 @@
 
 module.exports = {
-  
 
   images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'hediyelistem.com.tr',
-      },
-    ],
+    domains: ['hediyelistem.com.tr'],
+    protocol: 'https',
   },
  
   async rewrites() {
