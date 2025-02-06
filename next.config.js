@@ -3,7 +3,7 @@ module.exports = {
 
   images: {
     domains: ['hediyelistem.com.tr'],
-    protocol: 'https',
+    
   },
  
   async rewrites() {
