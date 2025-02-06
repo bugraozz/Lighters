@@ -30,7 +30,7 @@ export default function AdminLoginPage() {
       console.error("Passwords don't match");
       return;
     }
-    await register(Username, email, Password, confirmPassword);
+    await register(Username, email, Number(phone), Password, confirmPassword);
   }
 
   return (

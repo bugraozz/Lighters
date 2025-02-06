@@ -16,7 +16,7 @@ interface AuthContextType {
   isAdmin: boolean
   login: (username: string, password: string) => Promise<void>
   logout: () => void
-  register: (username: string, email: string, password: string, confirmPassword: string) => Promise<void>
+  register: (username: string, email: string, phone: number, password: string, confirmPassword: string) => Promise<void>
   error: string | null
   getToken: () => string | null
 }
@@ -82,10 +82,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }
 
-  const register = async (Username: string, email: string, Password: string, ConfirmPassword: string) => {
+  const register = async (Username: string, email: string, phone: number,  Password: string, ConfirmPassword: string) => {
     setError(null)
 
-    if (!Username || !email || !Password || !ConfirmPassword) {
+    if (!Username || !email || !Password || !phone || !ConfirmPassword) {
       setError('Please fill in all fields')
       return
     }
@@ -99,12 +99,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const response = await fetch('/api/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ Username, email, Password })
+        body: JSON.stringify({ Username, email, phone, Password })
       })
 
       if (!response.ok) {
         const errorData = await response.json()
-        throw new Error(errorData.message || 'Registration failed')
+        if (errorData.message === 'Phone number already exists') {
+          setError('Phone number already exists')
+        } else {
+          throw new Error(errorData.message || 'Registration failed')
+        }
       }
 
       const user = await response.json()

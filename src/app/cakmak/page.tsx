@@ -27,7 +27,6 @@ interface Product {
 
 interface FilterState {
   selectedCategories: string[];
-  selectedSizes: string[];
   priceRange: [number, number];
 }
 
@@ -65,14 +64,10 @@ export default function CakmakPage() {
         const categoryMatch =
           filters.selectedCategories.length === 0 || filters.selectedCategories.includes(product.category);
 
-        const sizeMatch =
-          filters.selectedSizes.length === 0 ||
-          product.sizes.some((sizeObj) => filters.selectedSizes.includes(sizeObj.size)); // sizes içindeki eşleşmeyi kontrol et
-
         const priceMatch =
           Number(product.price) >= filters.priceRange[0] && Number(product.price) <= filters.priceRange[1];
 
-        return categoryMatch && sizeMatch && priceMatch;
+        return categoryMatch && priceMatch;
       });
 
       setFilteredProducts(newFilteredProducts);

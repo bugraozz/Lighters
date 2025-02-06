@@ -140,7 +140,7 @@ export default function AdminUsersPage() {
                             {users.map((user) => (
                                 <TableRow key={user.id}>
                                     <TableCell>
-                                        <Button variant="destructive" onClick={() => deleteUser(user.id)}>Delete</Button>
+                                        <Button variant="destructive" onClick={() => deleteUser(user.id)}>Sil</Button>
                                     </TableCell>
                                     <TableCell >{user.Username}</TableCell>
                                     <TableCell >{user.email}</TableCell>
@@ -153,7 +153,7 @@ export default function AdminUsersPage() {
                                             onValueChange={(value) => editUserRoles(user.id, value)}
                                         >
                                             <SelectTrigger className="w-full">
-                                                <SelectValue placeholder="Role seçin" />
+                                                <SelectValue placeholder="Rol seçin" />
                                             </SelectTrigger>
                                             <SelectContent>
                                                 <SelectItem value="admin">Admin</SelectItem>

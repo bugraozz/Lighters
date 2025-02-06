@@ -1,12 +1,6 @@
-
-
-
-
-
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Slider } from '@/components/ui/slider';
 
@@ -23,7 +17,6 @@ interface ProductFiltersProps {
 
 interface FilterState {
   selectedCategories: string[];
-  selectedSizes: string[];
   priceRange: [number, number];
 }
 
@@ -33,25 +26,16 @@ async function fetchCategories(type: string): Promise<Category[]> {
   return response.json();
 }
 
-async function fetchSizes(): Promise<string[]> {
-  const response = await fetch(`/api/products/sizes`);
-  if (!response.ok) throw new Error('Bedenler yüklenirken bir hata oluştu.');
-  return response.json();
-}
-
 export default function ProductFilters({ type, onFilterChange }: ProductFiltersProps) {
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [sizes, setSizes] = useState<string[]>([]);
-  const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 10000]);
 
   useEffect(() => {
     const loadData = async () => {
       try {
-        const [categoriesData, sizesData] = await Promise.all([fetchCategories(type), fetchSizes()]);
+        const categoriesData = await fetchCategories(type);
         setCategories(categoriesData);
-        setSizes(sizesData);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -60,8 +44,8 @@ export default function ProductFilters({ type, onFilterChange }: ProductFiltersP
   }, [type]);
 
   const updateFilters = useCallback(() => {
-    onFilterChange({ selectedCategories, selectedSizes, priceRange });
-  }, [selectedCategories, selectedSizes, priceRange, onFilterChange]);
+    onFilterChange({ selectedCategories, priceRange });
+  }, [selectedCategories, priceRange, onFilterChange]);
 
   useEffect(() => {
     updateFilters();
@@ -70,12 +54,6 @@ export default function ProductFilters({ type, onFilterChange }: ProductFiltersP
   const handleCategoryChange = (category: string) => {
     setSelectedCategories((prev) =>
       prev.includes(category) ? prev.filter((c) => c !== category) : [...prev, category]
-    );
-  };
-
-  const handleSizeChange = (size: string) => {
-    setSelectedSizes((prev) =>
-      prev.includes(size) ? prev.filter((s) => s !== size) : [...prev, size]
     );
   };
 
@@ -99,23 +77,6 @@ export default function ProductFilters({ type, onFilterChange }: ProductFiltersP
             </label>
           </div>
         ))}
-      </div>
-
-      {/* Beden */}
-      <div>
-        <h2 className="text-md font-semibold mb-2">Beden</h2>
-        <div className="grid grid-cols-3 gap-2">
-          {sizes.map((size) => (
-            <Button
-              key={size}
-              variant={selectedSizes.includes(size) ? 'default' : 'outline'}
-              className="w-full"
-              onClick={() => handleSizeChange(size)}
-            >
-              {size}
-            </Button>
-          ))}
-        </div>
       </div>
 
       {/* Fiyat Aralığı */}

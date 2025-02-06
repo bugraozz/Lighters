@@ -10,10 +10,10 @@ export default async function handler(req, res) {
     }
 
     try {
-      const existingUser = await db.query('SELECT * FROM "Users" WHERE "Username" = $1 OR email = $2', [Username, email])
+      const existingUser = await db.query('SELECT * FROM "Users" WHERE "Username" = $1 OR email = $2 OR phone = $3', [Username, email, phone])
 
       if (existingUser.rows.length > 0) {
-        return res.status(400).json({ message: 'Username or email already exists' })
+        return res.status(400).json({ message: 'Username, email, or phone number already exists' })
       }
 
       const saltRounds = 10

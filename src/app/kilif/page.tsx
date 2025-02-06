@@ -18,7 +18,6 @@ interface Product {
 
 interface FilterState {
   selectedCategories: string[];
-  selectedSizes: string[];
   priceRange: [number, number];
 }
 
@@ -56,14 +55,10 @@ export default function KilifPage() {
         const categoryMatch =
           filters.selectedCategories.length === 0 || filters.selectedCategories.includes(product.category);
 
-        const sizeMatch =
-          filters.selectedSizes.length === 0 ||
-          filters.selectedSizes.includes(product.size); // size içindeki eşleşmeyi kontrol et
-
         const priceMatch =
           product.price >= filters.priceRange[0] && product.price <= filters.priceRange[1];
 
-        return categoryMatch && sizeMatch && priceMatch;
+        return categoryMatch && priceMatch;
       });
 
       setFilteredProducts(newFilteredProducts);

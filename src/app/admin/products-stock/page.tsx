@@ -138,7 +138,7 @@ export default function AdminProductsStockPage() {
                         <SelectValue placeholder="Cinsiyet Seç" />
                     </SelectTrigger>
                     <SelectContent>
-                        <SelectItem value="all">All</SelectItem>
+                        <SelectItem value="all">Tümü</SelectItem>
                         <SelectItem value="kilif">Kılıf</SelectItem>
                         <SelectItem value="cakmak">Çakmak</SelectItem>
                     </SelectContent>

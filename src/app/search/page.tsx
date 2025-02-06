@@ -20,7 +20,7 @@ interface Product {
 
 export default function SearchPage() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<div>Yükleniyor...</div>}>
       <SearchContent />
     </Suspense>
   )

@@ -109,19 +109,19 @@ export default function UserProfile() {
   };
 
   if (isLoading) {
-    return <div>Loading...</div>
+    return <div>Yükleniyor...</div>
   }
 
   if (error) {
-    return <div>Error: {error}</div>
+    return <div>Hata: {error}</div>
   }
 
   if (!user) {
-    return <div>No user data found</div>
+    return <div>Kullanıcı bulunamadı</div>
   }
 
   if (!authUser) {
-    return <div>Loading user information...</div>;
+    return <div>Kullanıcı bilgileri yükleniyor...</div>;
   }
   
 
