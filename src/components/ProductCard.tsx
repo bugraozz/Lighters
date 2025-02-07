@@ -6,8 +6,6 @@ import { useAuth } from '@/contexts/AuthContext'
 import { Heart } from 'lucide-react'
 import { toast } from "@/hooks/use-toast"
 
-
-
 interface Product {
   id: number
   name: string
@@ -16,13 +14,10 @@ interface Product {
   category: string
   images?: string[]
 }
-
-
-
 const getImageSrc = (image: string | undefined) => {
   if (!image) return '/placeholder.svg'
   if (image.startsWith('http')) return image
-  return image.startsWith('/') ? image : `/${image}`
+  return image.startsWith('/') ? `/api${image}` : `/api/${image}`
 }
 
 const formatPrice = (price: number | string): string => {
@@ -68,7 +63,7 @@ export function ProductCard({ product }: ProductCardProps) {
           price: parseFloat(formatPrice(product.price)),
           images: product.images || [],
           category: product.category,
-          type: 'product' 
+          type: 'product'
         })
       }
     } catch {
@@ -122,7 +117,7 @@ export function ProductCard({ product }: ProductCardProps) {
     ? getImageSrc(product.images[currentImageIndex])
     : getImageSrc(product.image)
 
-  
+
 
   return (
     <div className="border rounded-lg overflow-hidden shadow-md">
@@ -140,9 +135,8 @@ export function ProductCard({ product }: ProductCardProps) {
             className="object-cover"
           />
           <Heart
-            className={`absolute top-2 right-2 cursor-pointer ${
-              isFavorite(product.id) ? "fill-red-500 text-red-500" : "text-gray-500"
-            }`}
+            className={`absolute top-2 right-2 cursor-pointer ${isFavorite(product.id) ? "fill-red-500 text-red-500" : "text-gray-500"
+              }`}
             onClick={handleToggleFavorite}
           />
         </div>
@@ -151,9 +145,8 @@ export function ProductCard({ product }: ProductCardProps) {
             {product.images.map((_, index) => (
               <span
                 key={index}
-                className={`block w-2 h-2 rounded-full ${
-                  index === currentImageIndex ? 'bg-gray-800' : 'bg-gray-400'
-                }`}
+                className={`block w-2 h-2 rounded-full ${index === currentImageIndex ? 'bg-gray-800' : 'bg-gray-400'
+                  }`}
                 style={{ transition: 'background-color 0.3s', zIndex: 10 }}
               />
             ))}
@@ -161,7 +154,7 @@ export function ProductCard({ product }: ProductCardProps) {
         )}
         <div className="p-4">
           <h2 className="text-lg font-bold">{product.name}</h2>
-          
+
           <p className="text-sm text-gray-500">{formatPrice(product.price)} TL</p>
           <p className="text-xs text-gray-400">{product.category}</p>
         </div>

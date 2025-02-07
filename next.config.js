@@ -1,17 +1,8 @@
-
-module.exports = {
-
+const nextConfig = {
   images: {
     domains: ['hediyelistem.com.tr'],
-    
-  },
- 
-  async rewrites() {
-    return [
-      {
-        source: '/api/uploads/:path*',
-        destination: '/uploads/:path*',
-      },
-    ];
-  },
-}
+    unoptimized: true,
+  }
+};
+
+module.exports = nextConfig;
