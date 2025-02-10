@@ -36,7 +36,7 @@ export const FavoritesProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   const [isLoading, setIsLoading] = useState(true)
   const { user } = useAuth()
 
-  console.log('FavoritesProvider: Current user:', user)
+ 
 
   const fetchFavorites = useCallback(async () => {
     if (!user?.token) return
@@ -54,7 +54,7 @@ export const FavoritesProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       }
 
       const data = await response.json()
-      console.log('Fetched favorites:', data)
+      
       setFavorites(data)
     } catch (error) {
       console.error('Error fetching favorites:', error)
@@ -70,20 +70,19 @@ export const FavoritesProvider: React.FC<{ children: React.ReactNode }> = ({ chi
 
   useEffect(() => {
     if (user) {
-      console.log('User logged in, fetching favorites')
+     
       fetchFavorites()
     } else {
-      console.log('User not logged in, clearing favorites')
+      
       setFavorites([])
       setIsLoading(false)
     }
   }, [user, fetchFavorites])
 
   const addToFavorites = async (item: FavoriteItem) => {
-    console.log('addToFavorites called with item:', item)
-    console.log('Current user state in addToFavorites:', user)
+   
     if (!user?.token) {
-      console.log('User not authenticated')
+      
       toast({
         title: "Giriş Gerekli",
         description: "Favorilere eklemek için lütfen giriş yapın",
@@ -107,13 +106,13 @@ export const FavoritesProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       }
 
       const result = await response.json()
-      console.log('Add to favorites response:', result)
+      
 
       if (result.favorite) {
         setFavorites(prev => {
-          console.log('Previous favorites:', prev)
+        
           const newFavorites = [...prev, result.favorite]
-          console.log('New favorites:', newFavorites)
+         
           return newFavorites
         })
         toast({
@@ -152,9 +151,9 @@ export const FavoritesProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       }
 
       setFavorites(prev => {
-        console.log('Previous favorites:', prev)
+       
         const newFavorites = prev.filter(item => item.id !== id)
-        console.log('New favorites after removal:', newFavorites)
+       
         return newFavorites
       })
       toast({
@@ -173,7 +172,7 @@ export const FavoritesProvider: React.FC<{ children: React.ReactNode }> = ({ chi
 
   const isFavorite = (id: number) => {
     const result = favorites.some((item) => item.id === id)
-    console.log(`Checking if product ${id} is favorite:`, result)
+    
     return result
   }
 

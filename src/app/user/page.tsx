@@ -42,7 +42,7 @@ export default function UserProfile() {
         }
         const data = await response.json();
   
-        console.log('Fetched data:', data); // Debug için
+      
         const loggedInUser = data.find((u: UserInfo) => u.email === authUser?.email || '');
   
         if (loggedInUser) {
@@ -56,7 +56,7 @@ export default function UserProfile() {
         setIsLoading(false);
       }
     };
-    console.log('authUser:', authUser);
+  
   
     fetchUserData();
   }, [authUser]);
@@ -98,9 +98,9 @@ export default function UserProfile() {
         body: JSON.stringify(payload),
       });
 
-      console.log('Response:', response);
+      
       const data = await response.json();
-      console.log('Response Data:', data);
+      
 
       if (!response.ok) throw new Error(data.message || 'Failed to update profile');
     } catch (error) {

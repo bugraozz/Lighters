@@ -26,25 +26,25 @@ export const authOptions = {
         password: { label: "Şifre", type: "password" }
       },
       async authorize(credentials) {
-        console.log('Authorize called with credentials:', credentials)
+      
         if (!credentials?.email || !credentials?.password) {
-          console.log('Missing email or password')
+       
           throw new Error('Email ve şifre gereklidir')
         }
 
         const user = await getUser(credentials.email)
-        console.log('User found:', user)
+       
 
         if (!user) {
-          console.log('User not found')
+         
           throw new Error('Bu email adresi ile kayıtlı kullanıcı bulunamadı')
         }
 
         const isPasswordValid = await bcrypt.compare(credentials.password, user.password)
-        console.log('Password valid:', isPasswordValid)
+       
 
         if (!isPasswordValid) {
-          console.log('Invalid password')
+         
           throw new Error('Geçersiz şifre')
         }
 
@@ -66,12 +66,12 @@ export const authOptions = {
       return token
     },
     async session({ session, token }) {
-      console.log('Session callback called with token:', token)
+      
       if (session.user) {
         session.user.id = token.id
         session.user.role = token.role
       }
-      console.log('Session after modification:', session)
+    
       return session
     }
   },

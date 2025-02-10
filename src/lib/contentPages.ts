@@ -6,7 +6,7 @@ import db from './db'
 export async function getContentPages() {
   try {
     const result = await db.query('SELECT id, slug, title, content FROM content_pages ORDER BY created_at DESC')
-    console.log('DB: Fetched pages:', result.rows) // Debugging line
+
     return result.rows
   } catch (error) {
     console.error('Error fetching content pages:', error)

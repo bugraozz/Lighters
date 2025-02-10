@@ -34,7 +34,7 @@ type UserCountResult = { total_users: number };
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "GET") {
     try {
-      console.log("API: Fetching total users...");
+     
       const query = `SELECT COUNT(*) AS total_users FROM "Users"`;
 
       const result = await db.query(query);

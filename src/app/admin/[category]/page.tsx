@@ -28,26 +28,26 @@ interface Category {
 }
 
 async function fetchProducts(category: string): Promise<Product[]> {
-  console.log("Fetching products for category:", category);
+ 
   const response = await fetch(`/api/products?category=${category}`);
   if (!response.ok) {
     console.error("Error fetching products:", response.statusText);
     throw new Error("Ürünler yüklenirken bir hata oluştu.");
   }
   const data = await response.json();
-  console.log("Fetched products:", data);
+  
   return data;
 }
 
 async function fetchCategories(type: string): Promise<Category[]> {
-  console.log("Fetching categories for type:", type);
+  
   const response = await fetch(`/api/categories?type=${type}`);
   if (!response.ok) {
     console.error("Error fetching categories:", response.statusText);
     throw new Error("Kategoriler yüklenirken bir hata oluştu.");
   }
   const data = await response.json();
-  console.log("Fetched categories:", data);
+  
   return data;
 }
 
@@ -84,13 +84,12 @@ export default function AdminCategoryPage() {
       setIsLoading(true);
       setError(null);
       try {
-        console.log("Fetching data for category:", selectedCategory);
+       
         const [productsData, categoriesData] = await Promise.all([
           fetchProducts(selectedCategory),
           fetchCategories(type),
         ]);
-        console.log("Fetched products:", productsData);
-        console.log("Fetched categories:", categoriesData);
+        
         setProducts(Array.isArray(productsData) ? productsData : []);
         setCategories(Array.isArray(categoriesData) ? categoriesData : []);
       } catch (error) {

@@ -45,7 +45,7 @@ export default function AdminUsersPage() {
             });
             if (!response.ok) throw new Error('Kullanıcılar yüklenirken bir hata oluştu.');
             const data = await response.json();
-            console.log('Fetched users:', data);
+          
             setUsers(data);
             setLoading(false);
         } catch (error) {

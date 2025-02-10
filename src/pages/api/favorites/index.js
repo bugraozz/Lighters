@@ -6,8 +6,7 @@ import { verifyAuth } from '../../../lib/auth'
 import db from '../../../lib/db'
 
 export default async function handler(req, res) {
-  console.log('Favorites API called:', req.method)
-  console.log('Request body:', req.body)
+
   try {
     const authResult = await verifyAuth(req)
     if (!authResult.authenticated) {
@@ -58,7 +57,7 @@ export default async function handler(req, res) {
       res.setHeader('Allow', ['GET', 'POST'])
       res.status(405).end(`Method ${req.method} Not Allowed`)
     }
-    console.log('Favorites API response:', res.statusCode)
+    
   } catch (error) {
     console.error('Error in favorites handler:', error)
     res.status(500).json({ error: 'Internal server error' })

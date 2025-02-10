@@ -3,7 +3,7 @@ import db from '../../lib/db';
 import bcrypt from 'bcrypt';
 
 export default async function handler(req, res) {
-  console.log(`Received ${req.method} request`);
+
 
   if (req.method === 'POST') {
     const { Username, Password } = req.body;
@@ -40,7 +40,7 @@ export default async function handler(req, res) {
   } else if (req.method === 'GET') {
     try {
       const result = await db.query('SELECT id, "Username", email, adress, phone, gender, role FROM "Users"');
-      console.log(`Retrieved ${result.rows.length} "Users" from database`);
+     
       res.status(200).json(result.rows);
     } catch (error) {
       console.error('Database error:', error);

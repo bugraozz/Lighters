@@ -33,7 +33,7 @@ export default function FavoritesPage() {
     }
   }, [user])
 
-  console.log('Favorites:', favorites)
+ 
 
   if (isLoading) {
     return <div className="flex justify-center items-center h-screen">Yükleniyor...</div>

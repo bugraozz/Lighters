@@ -45,13 +45,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setUser(parsedUser)
       setIsLoggedIn(true)
       setIsAdmin(parsedUser.role === 'admin')
-      console.log('User loaded from localStorage:', parsedUser)
+     
     }
   }, [])
 
   const login = async (Username: string, Password: string) => {
     try {
-      console.log('Login called with:', { Username, Password })
+      
       const response = await fetch('/api/users', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -60,12 +60,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       if (!response.ok) {
         const errorData = await response.json()
-        console.log('Login failed:', errorData)
+        
         throw new Error(errorData.message || 'Login failed')
       }
 
       const { user } = await response.json()
-      console.log('User logged in:', user)
+      
       setUser(user)
       setIsLoggedIn(true)
       setIsAdmin(user.role === 'admin')
@@ -76,7 +76,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       router.push(user.role === 'admin' ? '/admin' : '/')
     } catch (err) {
-      console.log('Login error:', err)
+     
       const errorMessage = (err instanceof Error) ? err.message : 'Login failed. Please check your credentials.'
       setError(errorMessage)
     }
@@ -130,7 +130,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setIsAdmin(false)
     localStorage.removeItem('user')
     document.cookie = 'user=; Max-Age=0; path=/'; // Cookie'yi temizle
-    console.log('User logged out')
+   
     router.push('/')
   }
 

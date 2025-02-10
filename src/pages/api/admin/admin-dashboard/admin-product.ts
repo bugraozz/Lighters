@@ -8,7 +8,7 @@ interface TotalProductsResult {
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "GET") {
     try {
-      console.log("API: Fetching total products...")
+
       const query = `SELECT COUNT(*) AS total_products FROM "Products"`;
       const result = await db.query(query);
       const total_products = (result.rows[0] as unknown as TotalProductsResult)?.total_products ?? 0;

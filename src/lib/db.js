@@ -12,7 +12,7 @@ pool.connect((err, client, release) => {
   if (err) {
     return console.error('Veritabanı bağlantı hatası:', err.stack);
   }
-  console.log('Veritabanına başarıyla bağlanıldı');
+
   release(); // Client'ı serbest bırak
 });
 

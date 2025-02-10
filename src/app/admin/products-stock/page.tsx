@@ -70,7 +70,7 @@ export default function AdminProductsStockPage() {
                 throw new Error(errorData.error || 'Ürünler yüklenirken bir hata oluştu.');
             }
             const data = await response.json();
-            console.log('Fetched products:', data);
+           
             setProducts(data);
             setLoading(false);
         } catch (error) {

@@ -5,8 +5,7 @@ export default async function handler(req, res) {
   if (req.method === 'GET') {
     try {
       const result = await db.query('SELECT id, "Username", email, adress, phone, city, country, zipcode, gender FROM "Users"');
-      console.log(`Retrieved ${result.rows.length} "Users" from database`);
-      console.log('Fetched data:', result.rows);
+     
 
       res.status(200).json(result.rows);
     } catch (error) {
@@ -25,11 +24,10 @@ export default async function handler(req, res) {
           return res.status(404).json({ message: 'User not found' });
         }
 
-        console.log('Current password:', currentPassword);
-        console.log('Stored password hash:', user.Password);
+       
 
         const isMatch = await bcrypt.compare(currentPassword, user.Password);
-        console.log('Password match result:', isMatch);
+       
 
         if (!isMatch) {
           return res.status(400).json({ message: 'Current password is incorrect' });
