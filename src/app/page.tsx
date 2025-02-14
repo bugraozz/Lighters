@@ -1,19 +1,18 @@
 'use client';
 
-import React, { useEffect } from 'react';
 import Header from '@/components/Header';
 import ImageCarousel from '@/components/ImageCorousel';
 import { Footer } from '@/components/Footer';
 import FeaturedProducts from './featured-products/page';
 
-const womenImages = [
+const LightersImages = [
   '/uploads/1738544676014-IMG-20250129-WA0023.jpg',
   '/uploads/1738524411766-IMG-20250129-WA0016.jpg',
   '/uploads/1738544160769-IMG-20250129-WA0027.jpg',
   '/uploads/IMG-20250129-WA0005.jpg',
 ];
 
-const menImages = [
+const CaseImages = [
   '/uploads/IMG-20250131-WA0004.jpg',
   '/uploads/IMG-20250131-WA0002.jpg',
   '/uploads/IMG-20250131-WA0003.jpg',
@@ -33,7 +32,7 @@ export default function HomePage() {
         <div className="flex w-full h-[70vh] mb-8">
           <div className="w-1/2 h-full relative cursor-pointer">
             <ImageCarousel
-              images={womenImages}
+              images={LightersImages}
               alt="Kadın Bölümü"
               linkHref="/cakmak"
               buttonText="Çakmak Koleksiyonu"
@@ -41,7 +40,7 @@ export default function HomePage() {
           </div>
           <div className="w-1/2 h-full relative cursor-pointer">
             <ImageCarousel
-              images={menImages}
+              images={CaseImages}
               alt="Erkek Bölümü"
               linkHref="/kilif"
               buttonText="Kılıf Koleksiyonu"
