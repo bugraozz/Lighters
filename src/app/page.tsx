@@ -21,14 +21,7 @@ const menImages = [
 ];
 
 export default function HomePage() {
-  useEffect(() => {
-    async function trackVisitor() {
-      await fetch("/api/admin/admin-dashboard/admin-track", { method: "POST" });
-    }
-
-    trackVisitor();
-  }, []);
-
+ 
   return (
     <div className="min-h-screen bg-background text-foreground mt-0">
       <Header />

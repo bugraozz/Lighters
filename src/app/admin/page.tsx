@@ -13,43 +13,39 @@ export default function AdminPage() {
   const [totalUsers, setTotalUsers] = useState<number | null>(null);
   const [totalProducts, setTotalProducts] = useState<number | null>(null);
   const [visitorCount, setVisitorCount] = useState(0);
+  const [activeVisitors, setActiveVisitors] = useState(0)
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
-    const fetchTotalUsers = async () => {
+    const fetchData = async () => {
       try {
-        const response = await fetch("/api/admin/admin-dashboard");
-        const data = await response.json();
-        setTotalUsers(data.total_users);
-      } catch (error) {
-        console.error("Client: Error fetching total users:", error);
-      }
-    };
+        const [usersResponse, productsResponse, visitorsResponse] = await Promise.all([
+          fetch("/api/admin/admin-dashboard"),
+          fetch("/api/admin/admin-dashboard/admin-product"),
+          fetch("/api/admin/admin-dashboard/admin-visitor-count"),
+        ])
 
-    const fetchTotalProducts = async () => {
-      try {
-        const response = await fetch("/api/admin/admin-dashboard/admin-product");
-        const data = await response.json();
-        setTotalProducts(data.total_products);
-      } catch (error) {
-        console.error("Client: Error fetching total products:", error);
-      }
-    };
+        const userData = await usersResponse.json()
+        const productsData = await productsResponse.json()
+        const visitorsData = await visitorsResponse.json()
 
-    const fetchVisitorCount = async () => {
-      try {
-        const response = await fetch("/api/admin/admin-dashboard/admin-visitor-count");
-        const data = await response.json();
-        setVisitorCount(data.totalVisitors);
+        setTotalUsers(userData.total_users)
+        setTotalProducts(productsData.total_products)
+        setVisitorCount(visitorsData.totalVisitors)
+        setActiveVisitors(visitorsData.activeVisitors)
       } catch (error) {
-        console.error("Error fetching visitor count:", error);
+        console.error("Error fetching data:", error)
       }
-    };
+    }
 
-    fetchVisitorCount();
-    fetchTotalProducts();
-    fetchTotalUsers();
-  }, []);
+    fetchData()
+
+    
+    const intervalId = setInterval(fetchData, 60000)
+
+    
+    return () => clearInterval(intervalId)
+  }, [])
 
   const statistics = [
     {
@@ -66,9 +62,15 @@ export default function AdminPage() {
     },
     {
       title: "Toplam Ziyaretçi",
-      value: visitorCount,
+      value: visitorCount !== null ? visitorCount : "Yükleniyor...",
       icon: FaJediOrder,
       color: "bg-purple-500",
+    },
+    {
+      title: "Aktif Ziyaretçi (24 Saat)",
+      value: activeVisitors !== null ? activeVisitors : "Yükleniyor...",
+      icon: Users,
+      color: "bg-blue-500",
     },
   ];
 

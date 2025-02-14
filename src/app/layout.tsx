@@ -5,6 +5,7 @@ import { AuthProvider } from '@/contexts/AuthContext';
 import { ThemeProvider } from "@/components/theme-provider"
 import { FavoritesProvider } from '@/contexts/FavoritesContext';
 import { SessionProvider } from 'next-auth/react';
+import { useEffect } from 'react';
 
 const roboto = Roboto({ subsets: ['latin'], weight: ['400', '700'] }) // Update this line to use the new font
 
@@ -13,6 +14,18 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+
+  useEffect(() => {
+    const trackVisit = async () => {
+      try {
+        await fetch("/api/admin/admin-dashboard/admin-track", { method: "POST" })
+      } catch (error) {
+        console.error("Error tracking visit:", error)
+      }
+    }
+
+    trackVisit()
+  }, [])
 
     
 
