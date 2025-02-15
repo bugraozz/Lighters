@@ -9,30 +9,25 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     ip = Array.isArray(ip) ? ip[0] : typeof ip === "string" ? ip.split(",")[0].trim() : "unknown"
 
     console.log("İşlenmiş ziyaretçi IP:", ip)
-    console.log("Veritabanı bağlantı URL'si:", process.env.DATABASE_URL) // Dikkat: Hassas bilgi
 
     try {
+      // Önce bu IP'nin daha önce kaydedilip kaydedilmediğini kontrol edelim
       const checkQuery = "SELECT * FROM visitors WHERE ip_address = $1"
       const checkResult = await db.query(checkQuery, [ip])
-      console.log("Veritabanı kontrol sonucu:", checkResult.rows)
 
-      let query
-      let isNewVisitor = false
-      if (checkResult.rows.length === 0) {
-        query = "INSERT INTO visitors (ip_address, visit_time) VALUES ($1, CURRENT_TIMESTAMP)"
-        isNewVisitor = true
-      } else {
-        query = "UPDATE visitors SET visit_time = CURRENT_TIMESTAMP WHERE ip_address = $1"
-      }
+      const isNewVisitor = checkResult.rows.length === 0
 
-      const result = await db.query(query, [ip])
-      console.log("Veritabanı işlem sonucu:", result)
+      const query = isNewVisitor
+        ? "INSERT INTO visitors (ip_address, visit_time) VALUES ($1, CURRENT_TIMESTAMP)"
+        : "UPDATE visitors SET visit_time = CURRENT_TIMESTAMP WHERE ip_address = $1"
 
-      res.status(200).json({
-        message: isNewVisitor ? "Yeni ziyaretçi kaydedildi" : "Ziyaretçi güncellendi",
-        ip,
-        isNewVisitor,
-      })
+      await db.query(query, [ip])
+
+      console.log(`Ziyaretçi ${isNewVisitor ? "eklendi" : "güncellendi"}:`, ip)
+
+      res
+        .status(200)
+        .json({ message: isNewVisitor ? "Yeni ziyaretçi kaydedildi" : "Ziyaretçi güncellendi", ip, isNewVisitor })
     } catch (error) {
       console.error("Veritabanı hatası:", error)
       res
