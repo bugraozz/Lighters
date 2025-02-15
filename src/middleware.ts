@@ -3,10 +3,14 @@ import type { NextRequest } from 'next/server';
 
 export function middleware(request: NextRequest) {
   const user = request.cookies.get('user')?.value;
- 
+  const forwarded = request.headers.get('x-forwarded-for');
 
   if (['/login', '/admin/login'].includes(request.nextUrl.pathname)) {
     return NextResponse.next();
+  }
+
+  if (forwarded) {
+    request.headers.set('client-ip', forwarded.split(',')[0].trim()); // İlk IP’yi al ve düzelt
   }
 
   if (request.nextUrl.pathname.startsWith('/admin')) {
@@ -33,5 +37,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/admin/:path*', '/login', '/admin/login'],
+  matcher: ['/admin/:path*', '/login', '/admin/login','/api/:path*'],
 };
