@@ -55,17 +55,18 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import db from "../../../../lib/db";
 
 const getClientIp = (req: NextApiRequest): string | null => {
-  const forwarded = req.headers['x-forwarded-for']; // Proxy veya Load Balancer varsa
- 
+  // Nginx proxy üzerinden gelen gerçek istemci IP'sini al
+  const forwarded = req.headers['x-forwarded-for'];
 
   if (typeof forwarded === 'string') {
-    return forwarded.split(',')[0].trim(); // Listenin ilk IP’sini al
+    return forwarded.split(',')[0].trim(); // İlk IP'yi al
   }
 
   const rawIp = req.socket.remoteAddress;
   if (!rawIp) return null;
 
-  return rawIp.includes('::ffff:') ? rawIp.split('::ffff:')[1] : rawIp; // IPv6 formatını düzelt
+  // IPv6 formatını temizle (örneğin "::ffff:88.236.182.46" → "88.236.182.46")
+  return rawIp.replace(/^::ffff:/, '');
 };
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -75,11 +76,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   try {
     const ip = getClientIp(req);
+    console.log('Gerçek IP:', ip);
     if (!ip) {
       return res.status(400).json({ message: 'IP adresi alınamadı' });
     }
 
-    console.log('Gerçek IP:', ip);
+    
 
     // Veritabanında IP'yi kontrol et
     const checkQuery = "SELECT * FROM visitors WHERE ip_address = $1";
