@@ -43,7 +43,7 @@ export default function RootLayout({
     <SessionProvider>
       <AuthProvider>
         <html lang="en">
-          <body className={roboto.className}> {/* Update this line to use the new font */}
+          <body className={roboto.className}> 
             <ThemeProvider
               attribute="class"
               defaultTheme="system"
