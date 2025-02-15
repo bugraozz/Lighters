@@ -5,8 +5,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   console.log("admin-track API çağrıldı")
 
   if (req.method === "POST") {
-    let ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress || "unknown"
-    ip = Array.isArray(ip) ? ip[0] : typeof ip === "string" ? ip.split(",")[0].trim() : "unknown"
+    const forwarded = req.headers["x-forwarded-for"];
+    const ip = typeof forwarded === "string" ? forwarded.split(",")[0] : req.socket.remoteAddress;
 
     console.log("İşlenmiş ziyaretçi IP:", ip)
 
