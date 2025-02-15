@@ -19,6 +19,7 @@ export default function RootLayout({
   useEffect(() => {
     const trackVisit = async () => {
       try {
+        console.log("Ziyaret takibi başlatılıyor...")
         const response = await fetch("/api/admin/admin-dashboard/admin-track", {
           method: "POST",
           headers: {
@@ -26,10 +27,11 @@ export default function RootLayout({
           },
         })
         const data = await response.json()
+        console.log("Ziyaret takibi sonucu:", data)
         if (data.isNewVisitor) {
-          // New visitor logic
+          console.log(`Yeni ziyaretçi kaydedildi! IP: ${data.ip}`)
         } else {
-          // Existing visitor logic
+          console.log(`Mevcut ziyaretçinin ziyaret zamanı güncellendi. IP: ${data.ip}`)
         }
       } catch (error) {
         console.error("Ziyaret takibi hatası:", error)
