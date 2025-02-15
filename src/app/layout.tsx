@@ -15,19 +15,29 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
 
+
   useEffect(() => {
     const trackVisit = async () => {
       try {
-        await fetch("/api/admin/admin-dashboard/admin-track", { method: "POST" })
+        const response = await fetch("/api/admin/admin-dashboard/admin-track", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        const data = await response.json()
+        if (data.isNewVisitor) {
+          // New visitor logic
+        } else {
+          // Existing visitor logic
+        }
       } catch (error) {
-        console.error("Error tracking visit:", error)
+        console.error("Ziyaret takibi hatası:", error)
       }
     }
 
     trackVisit()
   }, [])
-
-    
 
   return (
     <SessionProvider>
