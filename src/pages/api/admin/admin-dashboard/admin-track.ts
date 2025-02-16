@@ -32,8 +32,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   try {
     const ip = getClientIp(req);
-    if (!ip) {
-      return res.status(400).json({ message: 'IP adresi alınamadı' });
+    if (!ip || ip === "127.0.0.1") {
+      return res.status(400).json({ message: 'Gerçek IP adresi alınamadı', receivedIp: ip });
     }
 
     console.log('Gerçek IP:', ip);
