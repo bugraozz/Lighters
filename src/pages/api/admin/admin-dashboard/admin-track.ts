@@ -4,10 +4,7 @@ import db from "../../../../lib/db";
 const getClientIp = (req: NextApiRequest): string | null => {
   let ip: string | null = null;
 
-  // Cloudflare header
-  if (req.headers['cf-connecting-ip']) {
-    ip = req.headers['cf-connecting-ip'] as string;
-  }
+
 
   // X-Forwarded-For header (proxy)
   if (!ip && req.headers['x-forwarded-for']) {
