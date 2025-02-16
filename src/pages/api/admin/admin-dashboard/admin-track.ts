@@ -4,30 +4,47 @@ import db from "../../../../lib/db";
 const getClientIp = (req: NextApiRequest): string | null => {
   let ip: string | null = null;
 
-  // X-Forwarded-For başlığını kontrol et
-  if (req.headers['x-forwarded-for']) {
+  // Cloudflare başlığı kontrolü
+  if (req.headers['cf-connecting-ip']) {
+    ip = req.headers['cf-connecting-ip'] as string;
+    console.log("Cloudflare IP:", ip);
+  }
+
+  // X-Forwarded-For başlığını kontrol et (proxy üzerinden gelen)
+  if (!ip && req.headers['x-forwarded-for']) {
     const forwarded = req.headers['x-forwarded-for'] as string;
     ip = forwarded.split(',')[0].trim(); // İlk IP'yi al
+    console.log("X-Forwarded-For IP:", ip);
   }
 
-  // X-Real-IP başlığını kontrol et
+  // X-Real-IP başlığını kontrol et (bazı proxy'ler bu başlığı kullanır)
   if (!ip && req.headers['x-real-ip']) {
     ip = req.headers['x-real-ip'] as string;
+    console.log("X-Real-IP:", ip);
   }
 
-  // Son çare olarak socket'ten alınan IP'yi kontrol et
+  // Eğer hala IP alınamadıysa, socket üzerinden IP al
   if (!ip) {
     ip = req.socket.remoteAddress ?? null;
+    console.log("Socket IP:", ip);
   }
 
-  // IPv6'dan IPv4'e dönüşüm yap
+  // IPv6'dan IPv4'e dönüşüm yap (eğer gerekiyorsa)
   if (ip?.startsWith("::ffff:")) {
-    ip = ip.replace("::ffff:", ""); // IPv6 formatını temizle
+    ip = ip.replace("::ffff:", "");
+    console.log("IPv4 IP:", ip);
+  }
+
+  // IP'nin 127.0.0.1 veya localhost olmamasını kontrol et
+  if (ip === "127.0.0.1" || ip === "::1") {
+    console.error("IP adresi geçersiz, localhost olarak algılanmış.");
+    return null;
   }
 
   console.log('İstemci IP:', ip);
   return ip;
 };
+
 
 
 
