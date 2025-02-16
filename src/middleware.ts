@@ -9,9 +9,9 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  if (forwarded) {
-    request.headers.set('client-ip', forwarded.split(',')[0].trim()); // İlk IP’yi al ve düzelt
-  }
+  // if (forwarded) {
+  //   request.headers.set('client-ip', forwarded.split(',')[0].trim()); // İlk IP’yi al ve düzelt
+  // }
 
   if (request.nextUrl.pathname.startsWith('/admin')) {
     if (!user) {
@@ -37,5 +37,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/admin/:path*', '/login', '/admin/login','/api/:path*'],
+  matcher: ['/admin/:path*', '/login', '/admin/login'],
 };
