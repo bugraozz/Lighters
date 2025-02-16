@@ -4,26 +4,31 @@ import db from "../../../../lib/db";
 const getClientIp = (req: NextApiRequest): string | null => {
   let ip: string | null = null;
 
+  // X-Forwarded-For başlığını kontrol et
   if (req.headers['x-forwarded-for']) {
     const forwarded = req.headers['x-forwarded-for'] as string;
     ip = forwarded.split(',')[0].trim(); // İlk IP'yi al
   }
 
+  // X-Real-IP başlığını kontrol et
   if (!ip && req.headers['x-real-ip']) {
-    ip = req.headers['x-real-ip'] as string; // Gerçek IP'yi al
+    ip = req.headers['x-real-ip'] as string;
   }
 
+  // Eğer hala IP bulunamazsa, soket adresini kullan
   if (!ip) {
     ip = req.socket.remoteAddress ?? null;
   }
 
+  // IPv6 formatından (::ffff:) temizle
   if (ip?.startsWith("::ffff:")) {
-    ip = ip.replace("::ffff:", ""); // IPv6 formatını temizle
+    ip = ip.replace("::ffff:", ""); 
   }
 
   console.log('İstemci IP:', ip);
   return ip;
 };
+
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
