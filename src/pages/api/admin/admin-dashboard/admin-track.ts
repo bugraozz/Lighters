@@ -2,18 +2,27 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import db from "../../../../lib/db";
 
 const getClientIp = (req: NextApiRequest): string | null => {
-  // Reverse Proxy veya doğrudan bağlantılar için IP al
-  const forwarded = req.headers['x-forwarded-for'];
+  let ip: string | null = null;
 
-  if (typeof forwarded === 'string') {
-    return forwarded.split(',')[0].trim(); // İlk IP'yi al
+  if (req.headers['x-forwarded-for']) {
+    const forwarded = req.headers['x-forwarded-for'] as string;
+    ip = forwarded.split(',')[0].trim(); // İlk IP'yi al
   }
 
-  const rawIp = req.socket.remoteAddress;
-  if (!rawIp) return null;
+  if (!ip && req.headers['x-real-ip']) {
+    ip = req.headers['x-real-ip'] as string; // Gerçek IP'yi al
+  }
 
-  // IPv6 formatını temizle (örneğin "::ffff:88.236.182.46" → "88.236.182.46")
-  return rawIp.replace(/^::ffff:/, '');
+  if (!ip) {
+    ip = req.socket.remoteAddress ?? null;
+  }
+
+  if (ip?.startsWith("::ffff:")) {
+    ip = ip.replace("::ffff:", ""); // IPv6 formatını temizle
+  }
+
+  console.log('İstemci IP:', ip);
+  return ip;
 };
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -23,11 +32,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   try {
     const ip = getClientIp(req);
-    console.log('Gerçek IP:', ip);
-
     if (!ip) {
       return res.status(400).json({ message: 'IP adresi alınamadı' });
     }
+
+    console.log('Gerçek IP:', ip);
 
     // Veritabanında IP'yi kontrol et
     const checkQuery = "SELECT * FROM visitors WHERE ip_address = $1";
@@ -37,13 +46,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       // Mevcut ziyaretçiyi güncelle
       const updateQuery = "UPDATE visitors SET visit_time = CURRENT_TIMESTAMP WHERE ip_address = $1";
       await db.query(updateQuery, [ip]);
-
       return res.json({ message: 'Ziyaretçi güncellendi', ip, isNewVisitor: false });
     } else {
       // Yeni ziyaretçi ekle
       const insertQuery = "INSERT INTO visitors (ip_address, visit_time) VALUES ($1, CURRENT_TIMESTAMP)";
       await db.query(insertQuery, [ip]);
-
       return res.json({ message: 'Yeni ziyaretçi kaydedildi', ip, isNewVisitor: true });
     }
   } catch (error) {
