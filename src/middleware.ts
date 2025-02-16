@@ -3,7 +3,7 @@ import type { NextRequest } from 'next/server';
 
 export function middleware(request: NextRequest) {
   const user = request.cookies.get('user')?.value;
-  const forwarded = request.headers.get('x-forwarded-for');
+  
 
   if (['/login', '/admin/login'].includes(request.nextUrl.pathname)) {
     return NextResponse.next();
