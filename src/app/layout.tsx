@@ -27,11 +27,11 @@ export default function RootLayout({
           },
         });
         const data = await response.json();
-        console.log("Ziyaret takibi sonucu:", data);
+        // console.log("Ziyaret takibi sonucu:", data);
         if (data.isNewVisitor) {
-          console.log(`Yeni ziyaretçi kaydedildi! IP: ${data.ip}`);
+          // console.log(`Yeni ziyaretçi kaydedildi! IP: ${data.ip}`);
         } else {
-          console.log(`Mevcut ziyaretçinin ziyaret zamanı güncellendi. IP: ${data.ip}`);
+          // console.log(`Mevcut ziyaretçinin ziyaret zamanı güncellendi. IP: ${data.ip}`);
         }
       } catch (error) {
         console.error("Ziyaret takibi hatası:", error);
