@@ -24,7 +24,7 @@ export default async function handler(req, res) {
 
         if (isPasswordValid) {
           const {  ...userWithoutPassword } = user;
-          const token =  ({ id: user.id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1d' });
+          const token = jwt.sign ({ id: user.id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1d' });
 
           return res.status(200).json({ message: 'Login successful', user: { ...userWithoutPassword, token } });
         } else {
