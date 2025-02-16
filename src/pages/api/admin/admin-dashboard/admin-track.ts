@@ -15,14 +15,14 @@ const getClientIp = (req: NextApiRequest): string | null => {
     ip = req.headers['x-real-ip'] as string;
   }
 
-  // Eğer hala IP bulunamazsa, soket adresini kullan
+  // Son çare olarak socket'ten alınan IP'yi kontrol et
   if (!ip) {
     ip = req.socket.remoteAddress ?? null;
   }
 
-  // IPv6 formatından (::ffff:) temizle
+  // IPv6'dan IPv4'e dönüşüm yap
   if (ip?.startsWith("::ffff:")) {
-    ip = ip.replace("::ffff:", ""); 
+    ip = ip.replace("::ffff:", ""); // IPv6 formatını temizle
   }
 
   console.log('İstemci IP:', ip);
