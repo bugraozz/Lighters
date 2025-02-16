@@ -3,7 +3,6 @@
 import { useEffect } from "react";
 import Cookies from "js-cookie"; // Çerez işlemleri için
 
-
 const VisitorTracker = () => {
     useEffect(() => {
         // Çerez kontrolü yap
@@ -14,7 +13,12 @@ const VisitorTracker = () => {
             fetch("/api/admin/admin-dashboard/admin-visitor-count", {
                 method: "POST",
             })
-                .then((res) => res.json())
+                .then((res) => {
+                    if (!res.ok) {
+                        throw new Error(`HTTP error! status: ${res.status}`);
+                    }
+                    return res.json();
+                })
                 .then(() => {
                     // Çerezi oluştur (cihazı tanımak için)
                     Cookies.set("visited", "true", { expires: 1 }); // 1 gün geçerli
